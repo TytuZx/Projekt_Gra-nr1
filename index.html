@@ -16,8 +16,8 @@
 
     var config = {
         type: Phaser.AUTO, //sposób renderowania grafiki
-        width: 800, //rozdzielczość
-        height: 600,
+        width: 640, //rozdzielczość
+        height: 480,
         /*physics: { //fizyka, to jest do zmiany i ustalenia jaka będzie odpowiednia
             default: 'arcade',
             arcade: {
@@ -34,21 +34,40 @@
 
     var game = new Phaser.Game(config); //nie dokońca wiem po co to jest, do ustalenia
 
+    var player; // ta zmienna to bedzie nasz gracz
+    var cursors // zmienna pomocnicza służąca do odczytu klawiszy 
+    var playerSpeed = 10; // dodanie prędkości postaci
+
     function preload() //ładowanie plików do gry (tekstury etc.)
     {
         this.load.image('groundp', 'assets/ground.png'); //ładowanie konkretnego pliku
         this.load.image('groundj', 'assets/ground.jpg');
+
+        cursors = this.input.keyboard.createCursorKeys(); // dodanie funkcji sterowania postacią
     }
 
     function create() //Funkcje ładowania rzeczy na ekran
     {
         this.add.image(400, 300, 'groundj');
-        this.add.image(400, 300, 'groundp');
+       // this.add.image(400, 300, 'groundp');
+
+        player = this.add.image(400, 400, 'groundp');
     }
 
     function update() //funkcje działające w pętli (ruch postaci, warunki przegranej/wygranej etc.)
     {
-
+        if(cursors.left.isDown){   // sterowanie postacią dla każdego klawisza
+            player.x -= playerSpeed;
+        }
+        if(cursors.right.isDown){
+            player.x += playerSpeed;
+        }
+        if(cursors.up.isDown){
+            player.y -= playerSpeed;
+        }
+        if(cursors.down.isDown){
+            player.y += playerSpeed;
+        }
     }
 
 </script>
