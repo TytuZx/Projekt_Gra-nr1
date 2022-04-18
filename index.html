@@ -22,6 +22,7 @@
   var player; // ta zmienna to bedzie nasz gracz
   var cursors; // zmienna pomocnicza służąca do odczytu klawiszy 
   var playerSpeed = 10; // dodanie prędkości postaci
+  var platform;
 
 
 
@@ -136,17 +137,58 @@ var Stage1 = new Phaser.Class({  // poziom pierwszy gry
     preload: function() //ładowanie plików do gry (tekstury etc.)
     {
         cursors = this.input.keyboard.createCursorKeys(); // dodanie funkcji sterowania postacią
+        platform = this.physics.add.staticGroup();
+
 
         this.load.image('groundp', 'assets/ground.png'); //ładowanie konkretnego pliku
-       // this.load.image('groundj', 'assets/ground.jpg');
+        this.load.image('groundj', 'assets/ground.jpg');
+        this.load.image('floor', 'assets/tile63.png'); 
+        this.load.image('leftWall', 'assets/tile84.png');
+        this.load.image('rightWall', 'assets/tile122.png');
+        this.load.image('topWall', 'assets/tile46.png');
+        this.load.image('door', 'assets/door1.png');
+
+
     },
     
     create: function() //Funkcje ładowania rzeczy na ekran
     {
-        this.add.image(400, 300, 'groundj');
-        this.add.image(400, 300, 'groundp');
+        var i;
+       
+        newDistance = 0;
+        for(i = 0; i<20; i++) {
+            platform.create(20, 0 + newDistance, 'leftWall');
+            newDistance += 35;
+        }
+        newDistance = 0;
 
-        player = this.add.image(400, 400, 'groundp');
+        for(i = 0; i<20; i++) {
+            platform.create(620, 0 + newDistance, 'rightWall');
+            newDistance += 35;
+        }
+
+        newDistance = 0;
+        for(i = 0; i<20; i++) {
+            platform.create(0 + newDistance, 0, 'topWall');
+            newDistance += 35;
+        }
+        var newDistance = 0;
+        // platform.create(300, 100, 'groundp').setScale(2).refreshBody();
+        for(i = 0; i<20; i++) {
+            platform.create(0 + newDistance, 490, 'floor');
+            newDistance += 35;
+        }
+        newDistance = 0;
+
+        platform.create(80, 436, 'door');
+        
+
+        player = this.physics.add.image(400, 400, 'groundp').setScale(0.3); // wczytanie bohatera w naszym przypadku aktualnie jest to kwadrat
+        player.setBounce(0.5);
+        player.setCollideWorldBounds(true); // dodanie kolizji bohatera, z oknem
+
+        player.body.setGravityY(1000);
+        
     },
 
     update: function()
