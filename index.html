@@ -28,11 +28,12 @@
   let platform, lamp, background, light, door, sceneElements, key1, key2, key3, keyPhisics;
   var game;
   let counter = 100;
-  var counterKey = 3;
+  var counterKey = 5;
   var isTouchingTheDoor = false;
   var intensityPlayerLamp;
   var LampIntensityText;
   var lampTimedEvent, newStageTimedEvent;
+  var platformDistance = 48;
 
 
 
@@ -152,7 +153,9 @@ var Stage1 = new Phaser.Class({  // poziom pierwszy gry
     {
         cursors = this.input.keyboard.createCursorKeys(); // dodanie funkcji sterowania postacią
         platform = this.physics.add.staticGroup();
+        insideWall = this.physics.add.staticGroup();
         keyPhisics = this.physics.add.staticGroup();
+      
         
         sceneElementsStatic = this.physics.add.staticGroup();
        // intensityPlayerLamp = 4;
@@ -169,7 +172,9 @@ var Stage1 = new Phaser.Class({  // poziom pierwszy gry
         this.load.image('door', ['assets/door1.png', 'assets/Solid_white.svg.png'] );
         this.load.image('lamp', 'assets/torch.png');
         this.load.image('key', 'assets/key2.png');
-
+        this.load.image('insideWall', 'assets/tile54.png');
+        this.load.image('insideWallColumn', 'assets/tile55.png');
+        this.load.image('vase', 'assets/vase.png');
     },
 
     
@@ -179,7 +184,6 @@ var Stage1 = new Phaser.Class({  // poziom pierwszy gry
     {
         function updateCounter1() {    // usuwanie klucza pierwszego, 
              counterKey--;
-             intensityPlayerLamp = intensityPlayerLamp + 1;
              counterText.setText('brakujące klucze:  ' + counterKey);
              console.log('cd');
              key1.disableBody(true, true); // usuwanie danego elementu
@@ -187,8 +191,6 @@ var Stage1 = new Phaser.Class({  // poziom pierwszy gry
 
     function updateCounter2() {    // usuwanie klucza drugirgo, 
              counterKey--;
-             intensityPlayerLamp = intensityPlayerLamp + 1;
-
              counterText.setText('brakujące klucze:  ' + counterKey);
              console.log('cd');
              key2.disableBody(true, true); // usuwanie danego elementu
@@ -196,12 +198,34 @@ var Stage1 = new Phaser.Class({  // poziom pierwszy gry
 
     function updateCounter3() {    // usuwanie klucza trzeciego, 
              counterKey--;
-             intensityPlayerLamp = intensityPlayerLamp + 1;
-
              counterText.setText('brakujące klucze:  ' + counterKey);
              console.log('cd');
              key3.disableBody(true, true); // usuwanie danego elementu
     };
+
+    function updateCounter4() {    // usuwanie klucza trzeciego, 
+             counterKey--;
+             counterText.setText('brakujące klucze:  ' + counterKey);
+             console.log('cd');
+             key4.disableBody(true, true); // usuwanie danego elementu
+    };
+
+    function updateCounter5() {    // usuwanie klucza trzeciego, 
+             counterKey--;
+             counterText.setText('brakujące klucze:  ' + counterKey);
+             console.log('cd');
+             key5.disableBody(true, true); // usuwanie danego elementu
+    };
+
+    function addLight1() {
+        intensityPlayerLamp = intensityPlayerLamp + 1;
+        vase1.disableBody(true, true);
+    }
+
+    function addLight2() {
+        intensityPlayerLamp = intensityPlayerLamp + 1;
+        vase2.disableBody(true, true);
+    }
 
     function openDoor() {   // funkcja odpala się gdy postać dotyka drzwi
         if (counterKey==0)
@@ -261,36 +285,123 @@ var Stage1 = new Phaser.Class({  // poziom pierwszy gry
         }
         newDistance = 0;
 
+        // insideWall.create(500, 500, 'insideWall').setPipeline('Light2D');
+   /////////////////////////////////////////////////////////////////////////////////////PLANSZA
+        var newDistance = 130;
+        for(i=0; i<30; i++) {
+            insideWall.create(newDistance, 800, 'insideWall').setPipeline('Light2D');
+            newDistance += platformDistance;
+        }
+
+        var newDistance = 100;
+        for(i=0; i<12; i++) {
+            insideWall.create(120, newDistance, 'insideWallColumn').setPipeline('Light2D');
+            newDistance += platformDistance;
+        }
+
+        var newDistance = 60;
+        for(i=0; i<14; i++) {
+            insideWall.create(220, newDistance, 'insideWallColumn').setPipeline('Light2D');
+            newDistance += platformDistance;
+        }
+
+        var newDistance = 130;
+        for(i=0; i<25; i++) {
+            insideWall.create(newDistance, 720, 'insideWall').setPipeline('Light2D');
+            newDistance += platformDistance;
+        }
+
+        var newDistance = 330;
+        for(i=0; i<15; i++) {
+            insideWall.create(newDistance, 100, 'insideWall').setPipeline('Light2D');
+            newDistance += platformDistance;
+        }
+
+        var newDistance = 370;
+        for(i=0; i<25; i++) {
+            insideWall.create(newDistance, 170, 'insideWall').setPipeline('Light2D');
+            newDistance += platformDistance;
+        }
+        var newDistance = 190;
+        for(i=0; i<10; i++) {
+            insideWall.create(340, newDistance, 'insideWallColumn').setPipeline('Light2D');
+            newDistance += platformDistance;
+        }
+        var newDistance = 190;
+        for(i=0; i<6; i++) {
+            insideWall.create(700, newDistance, 'insideWallColumn').setPipeline('Light2D');
+            newDistance += platformDistance;
+        }
+        var newDistance = 190;
+        for(i=0; i<12; i++) {
+            insideWall.create(1400, newDistance, 'insideWallColumn').setPipeline('Light2D');
+            newDistance += platformDistance;
+        }
+        var newDistance = 370;
+        for(i=0; i<20; i++) {
+            insideWall.create(newDistance, 560, 'insideWall').setPipeline('Light2D');
+            newDistance += platformDistance;
+        }
+        var newDistance = 370;
+        for(i=0; i<20; i++) {
+            insideWall.create(newDistance, 640, 'insideWall').setPipeline('Light2D');
+            newDistance += platformDistance;
+        }
+        var newDistance = 720;
+        for(i=0; i<12; i++) {
+            insideWall.create(newDistance, 460, 'insideWall').setPipeline('Light2D');
+            newDistance += platformDistance;
+        }
+        
+
+
+   /////////////////////////////////////////////////////////////////////////////////////PLANSZA
+
+
+        // insideWall.setPipeline('Light2D');
+
         lamp = this.physics.add.sprite(400, 300, 'lamp');
 
         lightLamp = this.lights.addLight(380, 300, 300).setColor(0xffffff).setIntensity(1.3); // ustawienie światła dla lampy
-
-        // lamp.setPipeline('Light2D');
-       // door = sceneElementsStatic.create(80, 436, 'door');
         door = this.physics.add.staticImage(80, 436, 'door');  
-        // this.physics.destroy(door);
         door.setPipeline('Light2D');  // funkcja która sprawia, że drzwi działają ze światłem
 
-        key1 = keyPhisics.create(100, 100, 'key');  // tworzenie klucza nr1
-        key2 = keyPhisics.create(300, 100, 'key');  // tworzenie klucza nr1
-        key3 = keyPhisics.create(500, 100, 'key');  // tworzenie klucza nr1
+        key1 = keyPhisics.create(80, 60, 'key');  // tworzenie klucza nr1
+        key2 = keyPhisics.create(1500, 60, 'key');  // tworzenie klucza nr1
+        key3 = keyPhisics.create(1500, 840, 'key');  // tworzenie klucza nr1
+        key4 = keyPhisics.create(400, 600, 'key');  // tworzenie klucza nr1
+        key5 = keyPhisics.create(1500, 250, 'key');  // tworzenie klucza nr1
 
         key1.setPipeline('Light2D');
         key2.setPipeline('Light2D');
         key3.setPipeline('Light2D');
+        key4.setPipeline('Light2D');
+        key5.setPipeline('Light2D');
 
+        vase1 = keyPhisics.create(1000, 400, 'vase');
+        vase1.setPipeline('Light2D');
 
+        vase2 = keyPhisics.create(1000, 300, 'vase');
+        vase2.setPipeline('Light2D');
 
-        player = this.physics.add.sprite(800, 450, 'groundp').setScale(0.3); // wczytanie bohatera w naszym przypadku aktualnie jest to kwadrat
+        player = this.physics.add.sprite(900, 400, 'groundp').setScale(0.15); // wczytanie bohatera w naszym przypadku aktualnie jest to kwadrat
         player.setCollideWorldBounds(true); // dodanie kolizji bohatera, z oknem
         
 
         background.setPipeline('Light2D'); // dodanie efektu światła na backgroundzie (przyciemnienie tła)
 
         this.physics.add.collider(platform, player);
+        this.physics.add.collider(insideWall, player);
         this.physics.add.collider(key1, player, updateCounter1, null, this);
         this.physics.add.collider(key2, player, updateCounter2, null, this);
         this.physics.add.collider(key3, player, updateCounter3, null, this);
+        this.physics.add.collider(key4, player, updateCounter4, null, this);
+        this.physics.add.collider(key5, player, updateCounter5, null, this);
+        this.physics.add.collider(vase1, player, addLight1, null, this);
+        this.physics.add.collider(vase2, player, addLight2, null, this);
+
+
+
         // this.physics.add.collider(door, player, openDoor, null, this);   
         this.physics.add.overlap(door, player, openDoor);
     },
@@ -300,7 +411,7 @@ var Stage1 = new Phaser.Class({  // poziom pierwszy gry
 
     update: function()
     {
-        
+       
     function onEvent()
     {
             this.scene.start('windowBetweenStage1AndStage2');
