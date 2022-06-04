@@ -135,11 +135,9 @@ var Intro = new Phaser.Class({
 
 }) 
 
-
-///////////////////////////////////////////////////////////////////////////// STAGE 1  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-var Stage1 = new Phaser.Class({  // poziom pierwszy gry
+    ///////////////////////////////////////////////////////////////////////////// STAGE 1 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    var Stage1 = new Phaser.Class({  // poziom pierwszy gry
 
     Extends: Phaser.Scene,
 
@@ -161,9 +159,6 @@ var Stage1 = new Phaser.Class({  // poziom pierwszy gry
       
         
         sceneElementsStatic = this.physics.add.staticGroup();
-       // intensityPlayerLamp = 4;
-       
-       // game.physics.startSystem(Phaser.physics.ARCADE);
 
 
         this.load.image('groundp', 'assets/ground.png'); //ładowanie konkretnego pliku
@@ -310,14 +305,12 @@ var Stage1 = new Phaser.Class({  // poziom pierwszy gry
             newDistance += 35;
         }
         var newDistance = 0;
-        // platform.create(300, 100, 'groundp').setScale(2).refreshBody();
         for(i = 0; i<itop; i++) {  // tworzenie podłogi
             platform.create(0 + newDistance, 906, 'floor').setPipeline('Light2D');
             newDistance += 35;
         }
         newDistance = 0;
 
-        // insideWall.create(500, 500, 'insideWall').setPipeline('Light2D');
    /////////////////////////////////////////////////////////////////////////////////////PLANSZA
         var newDistance = 130;
         for(i=0; i<30; i++) {
@@ -390,7 +383,7 @@ var Stage1 = new Phaser.Class({  // poziom pierwszy gry
    /////////////////////////////////////////////////////////////////////////////////////PLANSZA
 
 
-        // insideWall.setPipeline('Light2D');
+        // PRZEDMIOTY
 
         lamp = this.physics.add.sprite(400, 300, 'lamp');
 
@@ -416,6 +409,8 @@ var Stage1 = new Phaser.Class({  // poziom pierwszy gry
         vase2 = keyPhisics.create(1000, 300, 'vase');
         vase2.setPipeline('Light2D');
 
+        /////// GRACZ
+
         player = this.physics.add.sprite(900, 400, 'hero').setScale(2.5); // wczytanie bohatera
         player.setCollideWorldBounds(true); // dodanie kolizji bohatera, z oknem
 
@@ -436,6 +431,8 @@ var Stage1 = new Phaser.Class({  // poziom pierwszy gry
 
         background.setPipeline('Light2D'); // dodanie efektu światła na backgroundzie (przyciemnienie tła)
 
+        /////FIZYKA I ZDERZENIA
+
         this.physics.add.collider(platform, player);
         this.physics.add.collider(insideWall, player);
         this.physics.add.collider(key1, player, updateCounter1, null, this);
@@ -444,11 +441,7 @@ var Stage1 = new Phaser.Class({  // poziom pierwszy gry
         this.physics.add.collider(key4, player, updateCounter4, null, this);
         this.physics.add.collider(key5, player, updateCounter5, null, this);
         this.physics.add.collider(vase1, player, addLight1, null, this);
-        this.physics.add.collider(vase2, player, addLight2, null, this);
-
-
-
-        // this.physics.add.collider(door, player, openDoor, null, this);   
+        this.physics.add.collider(vase2, player, addLight2, null, this);  
         this.physics.add.overlap(door, player, openDoor);
     },
 
@@ -500,44 +493,43 @@ var Stage1 = new Phaser.Class({  // poziom pierwszy gry
 
   
  
-})
-///////////////////////////////////////////////////////////////////////////// STAGE 2 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-var WindowBetweenStage1AndStage2 = new Phaser.Class({
-
-    Extends: Phaser.Scene,
-
-    initialize:
-
-    function WindowBetweenStage1AndStage2 ()
-    {
-        Phaser.Scene.call(this, { key: 'windowBetweenStage1AndStage2' });
-    },
-
-    create: function () 
-    {
-
-       this.add.text(500, 300, 'Poziom 2 \n\n\n Udało Ci się zebrać wszystkie klucze i wszedłeś na kolejne piętro. \n\n\n naciśnij spację aby przejść dalej....', // wątek fabularny
-       { fill: '#fff'
-       });
-
-       this.input.keyboard.on('keydown-SPACE', this.startStage1, this); // ustawienie nasłuchiwania na naciśnięcie spacji
-    },
-
-    startStage1: function () {   // funkcja która ładuję się po naciśnięciu spacji
-        this.scene.start('stage2');
-    },
-})
-
-    var Stage3 = new Phaser.Class({  // poziom trzeci gry
+    })
+    ///////////////////////////////////////////////////////////////////////////// PRZEJSCIE 1>2 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    var WindowBetweenStage1AndStage2 = new Phaser.Class({
 
         Extends: Phaser.Scene,
 
         initialize:
 
-            function Stage3() {
-                Phaser.Scene.call(this, { key: 'stage3' });
+            function WindowBetweenStage1AndStage2() {
+                Phaser.Scene.call(this, { key: 'windowBetweenStage1AndStage2' });
+            },
+
+        create: function () {
+
+            this.add.text(500, 300, 'Poziom 2 \n\n\n Udało Ci się zebrać wszystkie klucze i wszedłeś na kolejne piętro. \n\n\n naciśnij spację aby przejść dalej....', // wątek fabularny
+                {
+                    fill: '#fff'
+                });
+
+            this.input.keyboard.on('keydown-SPACE', this.startStage1, this); // ustawienie nasłuchiwania na naciśnięcie spacji
+        },
+
+        startStage1: function () {   // funkcja która ładuję się po naciśnięciu spacji
+            this.scene.start('stage2');
+        },
+    })
+    ///////////////////////////////////////////////////////////////////////////// STAGE 2 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    var Stage2 = new Phaser.Class({  // poziom drugi gry
+
+        Extends: Phaser.Scene,
+
+        initialize:
+
+            function Stage2() {
+                Phaser.Scene.call(this, { key: 'stage2' });
             },
 
 
@@ -551,9 +543,6 @@ var WindowBetweenStage1AndStage2 = new Phaser.Class({
 
 
             sceneElementsStatic = this.physics.add.staticGroup();
-            // intensityPlayerLamp = 4;
-
-            // game.physics.startSystem(Phaser.physics.ARCADE);
 
 
             this.load.image('groundp', 'assets/ground.png'); //ładowanie konkretnego pliku
@@ -698,7 +687,6 @@ var WindowBetweenStage1AndStage2 = new Phaser.Class({
                 newDistance += 35;
             }
             var newDistance = 0;
-            // platform.create(300, 100, 'groundp').setScale(2).refreshBody();
             for (i = 0; i < itop; i++) {  // tworzenie podłogi
                 platform.create(0 + newDistance, 906, 'floor').setPipeline('Light2D');
                 newDistance += 35;
@@ -775,10 +763,10 @@ var WindowBetweenStage1AndStage2 = new Phaser.Class({
             */
 
 
-
             /////////////////////////////////////////////////////////////////////////////////////PLANSZA
 
-            //////////////////////////////PRZEDMIOTY
+
+            // PRZEDMIOTY
 
             lamp = this.physics.add.sprite(400, 300, 'lamp');
 
@@ -804,7 +792,7 @@ var WindowBetweenStage1AndStage2 = new Phaser.Class({
             vase2 = keyPhisics.create(1000, 300, 'vase');
             vase2.setPipeline('Light2D');
 
-            ///////////////////////////////////////////////POSTAĆ
+            /////// GRACZ
 
             player = this.physics.add.sprite(900, 400, 'hero').setScale(2.5); // wczytanie bohatera
             player.setCollideWorldBounds(true); // dodanie kolizji bohatera, z oknem
@@ -826,6 +814,8 @@ var WindowBetweenStage1AndStage2 = new Phaser.Class({
 
             background.setPipeline('Light2D'); // dodanie efektu światła na backgroundzie (przyciemnienie tła)
 
+            /////FIZYKA I ZDERZENIA
+
             this.physics.add.collider(platform, player);
             this.physics.add.collider(insideWall, player);
             this.physics.add.collider(key1, player, updateCounter1, null, this);
@@ -835,10 +825,6 @@ var WindowBetweenStage1AndStage2 = new Phaser.Class({
             this.physics.add.collider(key5, player, updateCounter5, null, this);
             this.physics.add.collider(vase1, player, addLight1, null, this);
             this.physics.add.collider(vase2, player, addLight2, null, this);
-
-
-
-            // this.physics.add.collider(door, player, openDoor, null, this);   
             this.physics.add.overlap(door, player, openDoor);
         },
 
@@ -887,10 +873,12 @@ var WindowBetweenStage1AndStage2 = new Phaser.Class({
             LampIntensityText.setText('pozostało światła:  ' + (intensityPlayerLamp * 25).toFixed(1) + ' %');
 
         }
-    })
 
-    ///////////////////////////////////////////////////////////////////////////// STAGE 3 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+    })
+    ///////////////////////////////////////////////////////////////////////////// STAGE 2>3 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     var WindowBetweenStage2AndStage3 = new Phaser.Class({
 
         Extends: Phaser.Scene,
@@ -913,9 +901,10 @@ var WindowBetweenStage1AndStage2 = new Phaser.Class({
 
         startStage1: function () {   // funkcja która ładuję się po naciśnięciu spacji
             this.scene.start('stage3');
-        },
+        }
     })
-
+    ///////////////////////////////////////////////////////////////////////////// STAGE 3 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     var Stage3 = new Phaser.Class({  // poziom trzeci gry
 
         Extends: Phaser.Scene,
@@ -937,9 +926,6 @@ var WindowBetweenStage1AndStage2 = new Phaser.Class({
 
 
             sceneElementsStatic = this.physics.add.staticGroup();
-            // intensityPlayerLamp = 4;
-
-            // game.physics.startSystem(Phaser.physics.ARCADE);
 
 
             this.load.image('groundp', 'assets/ground.png'); //ładowanie konkretnego pliku
@@ -1084,7 +1070,6 @@ var WindowBetweenStage1AndStage2 = new Phaser.Class({
                 newDistance += 35;
             }
             var newDistance = 0;
-            // platform.create(300, 100, 'groundp').setScale(2).refreshBody();
             for (i = 0; i < itop; i++) {  // tworzenie podłogi
                 platform.create(0 + newDistance, 906, 'floor').setPipeline('Light2D');
                 newDistance += 35;
@@ -1161,10 +1146,10 @@ var WindowBetweenStage1AndStage2 = new Phaser.Class({
             */
 
 
-
             /////////////////////////////////////////////////////////////////////////////////////PLANSZA
 
-            //////////////////////////////PRZEDMIOTY
+
+            // PRZEDMIOTY
 
             lamp = this.physics.add.sprite(400, 300, 'lamp');
 
@@ -1190,7 +1175,7 @@ var WindowBetweenStage1AndStage2 = new Phaser.Class({
             vase2 = keyPhisics.create(1000, 300, 'vase');
             vase2.setPipeline('Light2D');
 
-            ///////////////////////////////////////////////POSTAĆ
+            /////// GRACZ
 
             player = this.physics.add.sprite(900, 400, 'hero').setScale(2.5); // wczytanie bohatera
             player.setCollideWorldBounds(true); // dodanie kolizji bohatera, z oknem
@@ -1212,6 +1197,8 @@ var WindowBetweenStage1AndStage2 = new Phaser.Class({
 
             background.setPipeline('Light2D'); // dodanie efektu światła na backgroundzie (przyciemnienie tła)
 
+            /////FIZYKA I ZDERZENIA
+
             this.physics.add.collider(platform, player);
             this.physics.add.collider(insideWall, player);
             this.physics.add.collider(key1, player, updateCounter1, null, this);
@@ -1221,17 +1208,13 @@ var WindowBetweenStage1AndStage2 = new Phaser.Class({
             this.physics.add.collider(key5, player, updateCounter5, null, this);
             this.physics.add.collider(vase1, player, addLight1, null, this);
             this.physics.add.collider(vase2, player, addLight2, null, this);
-
-
-
-            // this.physics.add.collider(door, player, openDoor, null, this);   
             this.physics.add.overlap(door, player, openDoor);
         },
 
         update: function () {
 
             function onEvent1() {
-                this.scene.start('windowBetweenStage2AndStage3'); //przejście do następnej sceny
+                this.scene.start('GameEnding'); //przejście do następnej sceny
             };
 
             function onEvent2() {
@@ -1273,10 +1256,12 @@ var WindowBetweenStage1AndStage2 = new Phaser.Class({
             LampIntensityText.setText('pozostało światła:  ' + (intensityPlayerLamp * 25).toFixed(1) + ' %');
 
         }
-    })
-    ///////////////////////////////////////////////////////////////////////////// GAME OVER ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+
+
+    })
+    ///////////////////////////////////////////////////////////////////////////// GAME OVER /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     var Gameoverscreen = new Phaser.Class({
 
         Extends: Phaser.Scene,
@@ -1301,7 +1286,32 @@ var WindowBetweenStage1AndStage2 = new Phaser.Class({
             this.scene.start('intro');
         },
     })
+    ///////////////////////////////////////////////////////////////////////////// GAME ENDING /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    var Gameending = new Phaser.Class({
 
+        Extends: Phaser.Scene,
+
+        initialize:
+
+            function Gameending() {
+                Phaser.Scene.call(this, { key: 'Gameending' });
+            },
+
+        create: function () {
+
+            this.add.text(200, 300, 'WOLNOŚĆ!!! \n\n\n Świeże powietrze to pierwsze co czujesz przechodząc przez ostatnie drzwi. Wolny nareszcie wolny! Zostawiłeś ten przytłaczający mrok za sobą. \n Ciągle zostaje jeszcze pytanie. Jak się tam znalazłeś... \n\n\n naciśnij spację aby wrócić do menu....', // wątek fabularny
+                {
+                    fill: '#fff'
+                });
+
+            this.input.keyboard.on('keydown-SPACE', this.startStage1, this); // ustawienie nasłuchiwania na naciśnięcie spacji
+        },
+
+        startStage1: function () {   // funkcja która ładuję się po naciśnięciu spacji
+            this.scene.start('mainmenu');
+        },
+    })
 
 var config = {
         type: Phaser.WEBGL, //sposób renderowania grafiki
