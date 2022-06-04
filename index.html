@@ -34,6 +34,7 @@
   var LampIntensityText;
   var lampTimedEvent;
   var platformDistance = 48;
+  var Player_Velocity = 350;  //prędkość gracza 
 
 
 
@@ -419,23 +420,23 @@ var Stage1 = new Phaser.Class({  // poziom pierwszy gry
 
         if (cursors.left.isDown) {   // sterowanie postacią dla każdego klawisza
             //  player.x -= playerSpeed;
-            player.setVelocityX(-500);
+            player.setVelocityX(-Player_Velocity);
         } else {
             player.setVelocityX(0);
             player.setVelocityY(0);
         }
         if (cursors.right.isDown) {
-            player.setVelocityX(500);
+            player.setVelocityX(Player_Velocity);
 
             //  player.x += playerSpeed;
         }
         if (cursors.up.isDown) {
-            player.setVelocityY(-500);
+            player.setVelocityY(-Player_Velocity);
 
             //   player.y -= playerSpeed;
         }
         if (cursors.down.isDown) {
-            player.setVelocityY(500);
+            player.setVelocityY(Player_Velocity);
 
             //   player.y += playerSpeed;
         }
@@ -583,23 +584,23 @@ preload: function() //ładowanie plików do gry (tekstury etc.)
 
         if(cursors.left.isDown){   // sterowanie postacią dla każdego klawisza
           //  player.x -= playerSpeed;
-          player.setVelocityX(-500);
+            player.setVelocityX(-Player_Velocity);
         } else {
             player.setVelocityX(0);
             player.setVelocityY(0);      
         }
         if(cursors.right.isDown){
-            player.setVelocityX(500);
+            player.setVelocityX(Player_Velocity);
 
           //  player.x += playerSpeed;
         }
         if(cursors.up.isDown){
-            player.setVelocityY(-500);
+            player.setVelocityY(-Player_Velocity);
 
          //   player.y -= playerSpeed;
         }
         if(cursors.down.isDown){
-            player.setVelocityY(500);
+            player.setVelocityY(Player_Velocity);
 
          //   player.y += playerSpeed;
         }
