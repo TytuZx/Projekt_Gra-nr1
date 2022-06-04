@@ -54,7 +54,7 @@ var Preloader = new Phaser.Class({
     preload: function()
     {
         this.load.image('buttonStart', 'assets/PlayButton2.png');
-        this.scene.start('stage2');
+        this.scene.start('mainmenu');
     }
 
 
@@ -248,7 +248,7 @@ var Preloader = new Phaser.Class({
 
 
         var i;
-        background = this.add.image(800, 450, 'groundj');
+        background = this.add.image(800, 450, 'groundj'); //generowanie tła
 
         for (hor = 0; hor < 1600;) {
             for (ver = 0; ver < 900;) {
@@ -284,7 +284,7 @@ var Preloader = new Phaser.Class({
         light = this.lights.addLight(380, 300, 300).setColor(0xffffff).setIntensity(intensityPlayerLamp);
 
 
-        counterText = this.add.text(1040, 30, 'brakujące klucze:  ' + counterKey, { fontSize: '32px', fill: '#999' });
+        counterText = this.add.text(1040, 30, 'brakujące klucze:  ' + counterKey, { fontSize: '32px', fill: '#999' });  //HUD
         LampIntensityText = this.add.text(1040, 60, 'pozostało światła:  ' + intensityPlayerLamp + ' %', { fontSize: '32px', fill: '#999' });
        
 
@@ -630,9 +630,11 @@ var Preloader = new Phaser.Class({
 
 
             var i;
+            counterKey = 5; // ustawienie licznika kluczy
+            isTouchingTheDoor = false; //ustawienie styku z drzwiami do default
             background = this.add.image(800, 450, 'groundj');
 
-            for (hor = 0; hor < 1600;) {
+            for (hor = 0; hor < 1600;) {  //generowanie tła
                 for (ver = 0; ver < 900;) {
                     backgroundt.create(hor, ver, 'tiles3').setPipeline('Light2D');
                     ver += 45;
@@ -695,7 +697,6 @@ var Preloader = new Phaser.Class({
             newDistance = 0;
 
             /////////////////////////////////////////////////////////////////////////////////////PLANSZA
-            /*
             var newDistance = 130;
             for (i = 0; i < 30; i++) {
                 insideWall.create(newDistance, 800, 'insideWall').setPipeline('Light2D');
@@ -761,7 +762,7 @@ var Preloader = new Phaser.Class({
                 insideWall.create(newDistance, 460, 'insideWall').setPipeline('Light2D');
                 newDistance += platformDistance;
             }
-            */
+            
 
 
             /////////////////////////////////////////////////////////////////////////////////////PLANSZA
@@ -1013,7 +1014,9 @@ var Preloader = new Phaser.Class({
 
 
             var i;
-            background = this.add.image(800, 450, 'groundj');
+            counterKey = 5; // ustawienie licznika kluczy
+            isTouchingTheDoor = false; //ustawienie styku z drzwiami do default
+            background = this.add.image(800, 450, 'groundj'); //Generowanie Tła
 
             for (hor = 0; hor < 1600;) {
                 for (ver = 0; ver < 900;) {
@@ -1078,7 +1081,7 @@ var Preloader = new Phaser.Class({
             newDistance = 0;
 
             /////////////////////////////////////////////////////////////////////////////////////PLANSZA
-            /*
+            
             var newDistance = 130;
             for (i = 0; i < 30; i++) {
                 insideWall.create(newDistance, 800, 'insideWall').setPipeline('Light2D');
@@ -1144,7 +1147,7 @@ var Preloader = new Phaser.Class({
                 insideWall.create(newDistance, 460, 'insideWall').setPipeline('Light2D');
                 newDistance += platformDistance;
             }
-            */
+            
 
 
             /////////////////////////////////////////////////////////////////////////////////////PLANSZA
@@ -1215,7 +1218,7 @@ var Preloader = new Phaser.Class({
         update: function () {
 
             function onEvent1() {
-                this.scene.start('GameEnding'); //przejście do następnej sceny
+                this.scene.start('Gameending'); //przejście do następnej sceny
             };
 
             function onEvent2() {
@@ -1289,7 +1292,7 @@ var Preloader = new Phaser.Class({
     })
     ///////////////////////////////////////////////////////////////////////////// GAME ENDING /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    var Gameending = new Phaser.Class({
+    var Gameending = new Phaser.Class({ //Scena zakończenia
 
         Extends: Phaser.Scene,
 
