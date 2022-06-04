@@ -32,7 +32,7 @@
   var isTouchingTheDoor = false;
   var intensityPlayerLamp;
   var LampIntensityText;
-  var lampTimedEvent, newStageTimedEvent;
+  var lampTimedEvent;
   var platformDistance = 48;
 
 
@@ -45,7 +45,7 @@ var Preloader = new Phaser.Class({
 
     
 
-    function MainMenu () 
+    function MainMenu ()  //Menu początkowe
     {
         Phaser.Scene.call(this, { key: 'preloader' });
     },
@@ -53,7 +53,7 @@ var Preloader = new Phaser.Class({
     preload: function()
     {
         this.load.image('buttonStart', 'assets/PlayButton2.png');
-        this.scene.start('stage1');
+        this.scene.start('mainmenu');
     }
 
 
@@ -121,7 +121,7 @@ var Intro = new Phaser.Class({
     create: function () 
     {
 
-       this.add.text(500, 300, 'Stage1 \n\n\n obudziłeś sie w ciemnej jaskini, nie wiesz co się stało\n i jak się z niej wydostać\n\n\n naciśnij spację aby przejść dalej....', // wątek fabularny
+        this.add.text(500, 300, 'Poziom 1 \n\n\n Obudziłeś sie w ciemnym lochu... \n Nie wiesz jak się tu znalazłeś. Strasznie boli cię głowa... \n Czujesz jak wszechobecny mrok napiera na ciebie jakby chciał cię zgnieść. \n Musisz się jak najszybciej stąd wydostać na szczęście ktoś zostawił ci lampę... \n\n\n naciśnij spację aby przejść dalej....', // wątek fabularny
        { fill: '#fff'
        });
 
@@ -133,6 +133,7 @@ var Intro = new Phaser.Class({
     },
 
 }) 
+
 
 ///////////////////////////////////////////////////////////////////////////// STAGE 1  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -256,8 +257,8 @@ var Stage1 = new Phaser.Class({  // poziom pierwszy gry
         light = this.lights.addLight(380, 300, 300).setColor(0xffffff).setIntensity(intensityPlayerLamp);
 
 
-        counterText = this.add.text(1160, 50, 'brakujące klucze:  ' + counterKey, { fontSize: '32px', fill: '#999' });
-        LampIntensityText = this.add.text(1160, 80, 'pozostało światła:  ' + intensityPlayerLamp + ' %', { fontSize: '32px', fill: '#999' });
+        counterText = this.add.text(1040, 30, 'brakujące klucze:  ' + counterKey, { fontSize: '32px', fill: '#999' });
+        LampIntensityText = this.add.text(1040, 60, 'pozostało światła:  ' + intensityPlayerLamp + ' %', { fontSize: '32px', fill: '#999' });
        
 
         newDistance = 0;    // tworzenie lewej ściany
@@ -406,51 +407,56 @@ var Stage1 = new Phaser.Class({  // poziom pierwszy gry
         this.physics.add.overlap(door, player, openDoor);
     },
 
-   
+    update: function () {
 
+        function onEvent1() {
+            this.scene.start('windowBetweenStage1AndStage2'); //przejście do następnej sceny
+        };
 
-    update: function()
-    {
-       
-    function onEvent()
-    {
-            this.scene.start('windowBetweenStage1AndStage2');
-    };
+        function onEvent2() {
+            this.scene.start('Gameoverscreen'); //ekran game over
+        };
 
-        if(cursors.left.isDown){   // sterowanie postacią dla każdego klawisza
-          //  player.x -= playerSpeed;
-          player.setVelocityX(-500);
+        if (cursors.left.isDown) {   // sterowanie postacią dla każdego klawisza
+            //  player.x -= playerSpeed;
+            player.setVelocityX(-500);
         } else {
             player.setVelocityX(0);
-            player.setVelocityY(0);      
+            player.setVelocityY(0);
         }
-        if(cursors.right.isDown){
+        if (cursors.right.isDown) {
             player.setVelocityX(500);
 
-          //  player.x += playerSpeed;
+            //  player.x += playerSpeed;
         }
-        if(cursors.up.isDown){
+        if (cursors.up.isDown) {
             player.setVelocityY(-500);
 
-         //   player.y -= playerSpeed;
+            //   player.y -= playerSpeed;
         }
-        if(cursors.down.isDown){
+        if (cursors.down.isDown) {
             player.setVelocityY(500);
 
-         //   player.y += playerSpeed;
+            //   player.y += playerSpeed;
         }
 
         light.x = player.x; // ustawienie światła w pozycji bohatera
         light.y = player.y;
 
-        if(counterKey == 0 && isTouchingTheDoor)  // sprawdzenie czy użytkownik zebrał wszystkie klucze i czy dotyka drzwi
+       
+        if (counterKey == 0 && isTouchingTheDoor) //sprawdzenie czy zebrane zostały klucze i gracz jest przy drzwiach
         {
-            lampTimedEvent = this.time.addEvent({ delay: 900, callback: onEvent, callbackScope: this, loop: false })   // wywołanie funkcji z opóżnieniem
+            lampTimedEvent = this.time.addEvent({ delay: 900, callback: onEvent1, callbackScope: this, loop: false })   // wywołanie funkcji z opóżnieniem
         }
-    
-       light.setIntensity(intensityPlayerLamp);
-       LampIntensityText.setText('pozostało światła:  ' + (intensityPlayerLamp * 25).toFixed(3) + ' %');
-        
+
+        if (intensityPlayerLamp <= 0) //sprawdzenie mocy lampy przegrana jeśli dojdzie do 0
+        {
+            lampTimedEvent = this.time.addEvent({ delay: 100, callback: onEvent2, callbackScope: this, loop: false }) //wywołanie funkcji z opóźnieniem
+        }
+
+        light.setIntensity(intensityPlayerLamp);
+        LampIntensityText.setText('pozostało światła:  ' + (intensityPlayerLamp * 25).toFixed(1) + ' %');
+
     }
 
   
@@ -473,7 +479,7 @@ var WindowBetweenStage1AndStage2 = new Phaser.Class({
     create: function () 
     {
 
-       this.add.text(500, 300, 'Stage2 \n\n\n Udało Ci się zebrać wszystkie klucze i przejść do następnego poziomu \n\n\n naciśnij spację aby przejść dalej....', // wątek fabularny
+       this.add.text(500, 300, 'Poziom 2 \n\n\n Udało Ci się zebrać wszystkie klucze i wszedłeś na kolejne piętro. \n\n\n naciśnij spację aby przejść dalej....', // wątek fabularny
        { fill: '#fff'
        });
 
@@ -601,8 +607,36 @@ preload: function() //ładowanie plików do gry (tekstury etc.)
         light.x = player.x; // ustawienie światła w pozycji bohatera
         light.y = player.y;
     }
- 
 })
+
+    ///////////////////////////////////////////////////////////////////////////// GAME OVER ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    var Gameoverscreen = new Phaser.Class({
+
+        Extends: Phaser.Scene,
+
+        initialize:
+
+            function Gameoverscreen() {
+                Phaser.Scene.call(this, { key: 'Gameoverscreen' });
+            },
+
+        create: function () {
+
+            this.add.text(200, 300, 'GAME OVER \n\n\n Wszechobecny mrok otoczył cię i spowił twój umysł pchając cię w odmęty szaleństwa. Ten loch stał się twoim grobowcem. \n\n\n naciśnij spację aby spróbować ponownie....', // wątek fabularny
+                {
+                    fill: '#fff'
+                });
+
+            this.input.keyboard.on('keydown-SPACE', this.startStage1, this); // ustawienie nasłuchiwania na naciśnięcie spacji
+        },
+
+        startStage1: function () {   // funkcja która ładuję się po naciśnięciu spacji
+            this.scene.start('intro');
+        },
+    })
+
 
 var config = {
         type: Phaser.WEBGL, //sposób renderowania grafiki
@@ -617,7 +651,7 @@ var config = {
         },
 
         scene: [
-         Preloader, MainMenu, Stage1, WindowBetweenStage1AndStage2, Stage2, Intro
+         Preloader, MainMenu, Stage1, WindowBetweenStage1AndStage2, Stage2, Intro, Gameoverscreen
     ],
        
         plugins: {
