@@ -54,7 +54,7 @@ var Preloader = new Phaser.Class({
     preload: function()
     {
         this.load.image('buttonStart', 'assets/PlayButton2.png');
-        this.scene.start('stage2');
+        this.scene.start('mainmenu');
     }
 
 
@@ -181,6 +181,7 @@ var Stage1 = new Phaser.Class({  // poziom pierwszy gry
         this.load.image('tiles1', 'assets/tile10.png');
         this.load.image('tiles2', 'assets/tile178.png');
         this.load.image('tiles3', 'assets/tile4.png');
+        this.load.spritesheet('hero', 'assets/herosprite.png', {frameWidth: 16, frameHeight: 16});
     },
 
     
@@ -195,7 +196,7 @@ var Stage1 = new Phaser.Class({  // poziom pierwszy gry
              key1.disableBody(true, true); // usuwanie danego elementu
     };
 
-    function updateCounter2() {    // usuwanie klucza drugirgo, 
+    function updateCounter2() {    // usuwanie klucza drugiego, 
              counterKey--;
              counterText.setText('brakujące klucze:  ' + counterKey);
              console.log('cd');
@@ -266,7 +267,7 @@ var Stage1 = new Phaser.Class({  // poziom pierwszy gry
                 backgroundt.create(hor, ver, 'tiles2').setPipeline('Light2D');
                 ver += 65;
             }
-            hor += 58;
+            hor += 78;
         }
 
         for (hor = 0; hor < 1600;) {
@@ -403,20 +404,34 @@ var Stage1 = new Phaser.Class({  // poziom pierwszy gry
         key4 = keyPhisics.create(400, 600, 'key');  // tworzenie klucza nr1
         key5 = keyPhisics.create(1500, 250, 'key');  // tworzenie klucza nr1
 
-        key1.setPipeline('Light2D');
+        key1.setPipeline('Light2D'); //oddziaływanie światła na klucze
         key2.setPipeline('Light2D');
         key3.setPipeline('Light2D');
         key4.setPipeline('Light2D');
         key5.setPipeline('Light2D');
 
-        vase1 = keyPhisics.create(1000, 400, 'vase');
+        vase1 = keyPhisics.create(1000, 400, 'vase'); //zbiorniki z olejem do lampy
         vase1.setPipeline('Light2D');
 
         vase2 = keyPhisics.create(1000, 300, 'vase');
         vase2.setPipeline('Light2D');
 
-        player = this.physics.add.sprite(900, 400, 'groundp').setScale(0.15); // wczytanie bohatera w naszym przypadku aktualnie jest to kwadrat
+        player = this.physics.add.sprite(900, 400, 'hero').setScale(2.5); // wczytanie bohatera
         player.setCollideWorldBounds(true); // dodanie kolizji bohatera, z oknem
+
+        this.anims.create({ //animacje obrotu postaci
+            key: 'left',
+            frames: [{ key: 'hero', frame: 0 }],
+            frameRate: 10,
+            repeat: -1
+        });
+
+        this.anims.create({
+            key: 'right',
+            frames: [{ key: 'hero', frame: 1 }],
+            frameRate: 10,
+            repeat: -1
+        });
         
 
         background.setPipeline('Light2D'); // dodanie efektu światła na backgroundzie (przyciemnienie tła)
@@ -448,26 +463,20 @@ var Stage1 = new Phaser.Class({  // poziom pierwszy gry
         };
 
         if (cursors.left.isDown) {   // sterowanie postacią dla każdego klawisza
-            //  player.x -= playerSpeed;
             player.setVelocityX(-Player_Velocity);
+            player.anims.play('left', true); //włączanie animacji przy obrocie postaci
+        } else if (cursors.right.isDown) {
+            player.setVelocityX(Player_Velocity);
+            player.anims.play('right', true); //włączanie animacji przy obrocie postaci
         } else {
             player.setVelocityX(0);
-            player.setVelocityY(0);
-        }
-        if (cursors.right.isDown) {
-            player.setVelocityX(Player_Velocity);
-
-            //  player.x += playerSpeed;
         }
         if (cursors.up.isDown) {
             player.setVelocityY(-Player_Velocity);
-
-            //   player.y -= playerSpeed;
-        }
-        if (cursors.down.isDown) {
+        } else if (cursors.down.isDown) {
             player.setVelocityY(Player_Velocity);
-
-            //   player.y += playerSpeed;
+        } else {
+            player.setVelocityY(0);
         }
 
         light.x = player.x; // ustawienie światła w pozycji bohatera
@@ -556,6 +565,7 @@ preload: function() //ładowanie plików do gry (tekstury etc.)
         this.load.image('tiles1', 'assets/tile10.png');
         this.load.image('tiles2', 'assets/tile178.png');
         this.load.image('tiles3', 'assets/tile4.png');
+        this.load.spritesheet('hero', 'assets/herosprite.png', { frameWidth: 16, frameHeight: 16 });
 
     },
 
@@ -578,7 +588,7 @@ preload: function() //ładowanie plików do gry (tekstury etc.)
                 backgroundt.create(hor, ver, 'tiles2').setPipeline('Light2D');
                 ver += 65;
             }
-            hor += 58;
+            hor += 78;
         }
 
         for (hor = 0; hor < 1600;) {
@@ -628,40 +638,47 @@ preload: function() //ładowanie plików do gry (tekstury etc.)
         lightLamp = this.lights.addLight(380, 300, 300).setColor(0xffffff).setIntensity(0.5); // ustawienie światła dla lampy
 
         
-        player = this.physics.add.image(800, 450, 'groundp').setScale(0.3); // wczytanie bohatera w naszym przypadku aktualnie jest to kwadrat
+        player = this.physics.add.sprite(900, 400, 'hero').setScale(2.5); // wczytanie bohatera w naszym przypadku aktualnie jest to kwadrat
         player.setCollideWorldBounds(true); // dodanie kolizji bohatera, z oknem
-        
+
+        this.anims.create({
+            key: 'left',
+            frames: [{ key: 'hero', frame: 0 }],
+            frameRate: 10,
+            repeat: -1
+        });
+
+        this.anims.create({
+            key: 'right',
+            frames: [{ key: 'hero', frame: 1 }],
+            frameRate: 10,
+            repeat: -1
+        });
 
         background.setPipeline('Light2D'); // dodanie efektu światła na backgroundzie (przyciemnienie tła)
 
 
     },
 
-    update: function()
-    {
-       
+    update: function () {
 
-        if(cursors.left.isDown){   // sterowanie postacią dla każdego klawisza
-          //  player.x -= playerSpeed;
+
+        if (cursors.left.isDown) {   // sterowanie postacią dla każdego klawisza
             player.setVelocityX(-Player_Velocity);
+            player.anims.play('left', true); //włączanie animacji przy obrocie postaci
+        } else if (cursors.right.isDown) {
+            player.setVelocityX(Player_Velocity);
+            player.anims.play('right', true); //włączanie animacji przy obrocie postaci
         } else {
             player.setVelocityX(0);
-            player.setVelocityY(0);      
         }
-        if(cursors.right.isDown){
-            player.setVelocityX(Player_Velocity);
-
-          //  player.x += playerSpeed;
-        }
-        if(cursors.up.isDown){
+        if (cursors.up.isDown) {
             player.setVelocityY(-Player_Velocity);
-
-         //   player.y -= playerSpeed;
-        }
-        if(cursors.down.isDown){
+        } else if (cursors.down.isDown) {
             player.setVelocityY(Player_Velocity);
-
-         //   player.y += playerSpeed;
+        } else
+        {
+            player.setVelocityY(0);
         }
 
         light.x = player.x; // ustawienie światła w pozycji bohatera
