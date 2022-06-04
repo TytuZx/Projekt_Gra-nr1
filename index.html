@@ -54,14 +54,15 @@ var Preloader = new Phaser.Class({
     preload: function()
     {
         this.load.image('buttonStart', 'assets/PlayButton2.png');
-        this.scene.start('mainmenu');
+        this.scene.start('stage2');
     }
 
 
 })
 
-
-var MainMenu = new Phaser.Class({  // komponent menu
+    ///////////////////////////////////////////////////////////////////////////// MENU ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    var MainMenu = new Phaser.Class({  // komponent menu
 
     Extends: Phaser.Scene,
 
@@ -97,8 +98,9 @@ var MainMenu = new Phaser.Class({  // komponent menu
     }
 
 })
-
-var Intro = new Phaser.Class({
+    ///////////////////////////////////////////////////////////////////////////// INTRO ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    var Intro = new Phaser.Class({
 
 
     Extends: Phaser.Scene,
@@ -134,7 +136,6 @@ var Intro = new Phaser.Class({
     },
 
 }) 
-
     ///////////////////////////////////////////////////////////////////////////// STAGE 1 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     var Stage1 = new Phaser.Class({  // poziom pierwszy gry
@@ -885,13 +886,13 @@ var Intro = new Phaser.Class({
 
         initialize:
 
-            function WindowBetweenStage1AndStage2() {
+            function WindowBetweenStage2AndStage3() {
                 Phaser.Scene.call(this, { key: 'windowBetweenStage2AndStage3' });
             },
 
         create: function () {
 
-            this.add.text(500, 300, 'Poziom 3 \n\n\n Udało Ci się zebrać wszystkie klucze i wszedłeś na 3 piętro. Czujesz już powiew świeżego wiatru. Wyjście musi być blisko. \n\n\n naciśnij spację aby przejść dalej....', // wątek fabularny
+            this.add.text(200, 300, 'Poziom 3 \n\n\n Udało Ci się zebrać wszystkie klucze i wszedłeś na 3 piętro. Czujesz już powiew świeżego wiatru. Wyjście musi być blisko. \n\n\n naciśnij spację aby przejść dalej....', // wątek fabularny
                 {
                     fill: '#fff'
                 });
@@ -1326,7 +1327,7 @@ var config = {
         },
 
         scene: [
-         Preloader, MainMenu, Stage1, WindowBetweenStage1AndStage2, Stage2, Intro, Gameoverscreen
+            Preloader, MainMenu, Intro, Stage1, WindowBetweenStage1AndStage2, Stage2, WindowBetweenStage2AndStage3, Stage3, Gameending, Gameoverscreen
     ],
        
         plugins: {
