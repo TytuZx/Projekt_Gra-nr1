@@ -54,7 +54,7 @@ var Preloader = new Phaser.Class({
     preload: function()
     {
         this.load.image('buttonStart', 'assets/PlayButton2.png');
-        this.scene.start('mainmenu');
+        this.scene.start('stage2');
     }
 
 
@@ -253,7 +253,7 @@ var Stage1 = new Phaser.Class({  // poziom pierwszy gry
         var i;
         background = this.add.image(800, 450, 'groundj');
 
-        for (hor = 0; hor < 1600;) { //generowanie tła
+        for (hor = 0; hor < 1600;) {
             for (ver = 0; ver < 900;) {
                 backgroundt.create(hor, ver, 'tiles3').setPipeline('Light2D');
                 ver += 45;
@@ -264,7 +264,7 @@ var Stage1 = new Phaser.Class({  // poziom pierwszy gry
         for (hor = 45; hor < 1600;) {
             for (ver = 0; ver < 900;) {
                 backgroundt.create(hor, ver, 'tiles2').setPipeline('Light2D');
-                ver += 95;
+                ver += 65;
             }
             hor += 58;
         }
@@ -537,6 +537,7 @@ preload: function() //ładowanie plików do gry (tekstury etc.)
         cursors = this.input.keyboard.createCursorKeys(); // dodanie funkcji sterowania postacią
         platform = this.physics.add.staticGroup();
         keyPhisics = this.physics.add.staticGroup();
+        backgroundt = this.physics.add.staticGroup();
         
         sceneElementsStatic = this.physics.add.staticGroup();
        
@@ -561,8 +562,10 @@ preload: function() //ładowanie plików do gry (tekstury etc.)
     create: function() //Funkcje ładowania rzeczy na ekran
     {
         var i;
+
         background = this.add.image(800, 450, 'groundj');
-        for (hor = 0; hor < 1600;) { //generowanie tła
+
+        for (hor = 0; hor < 1600;) {
             for (ver = 0; ver < 900;) {
                 backgroundt.create(hor, ver, 'tiles3').setPipeline('Light2D');
                 ver += 45;
@@ -573,7 +576,7 @@ preload: function() //ładowanie plików do gry (tekstury etc.)
         for (hor = 45; hor < 1600;) {
             for (ver = 0; ver < 900;) {
                 backgroundt.create(hor, ver, 'tiles2').setPipeline('Light2D');
-                ver += 95;
+                ver += 65;
             }
             hor += 58;
         }
