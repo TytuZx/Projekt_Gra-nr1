@@ -60,8 +60,9 @@ var Preloader = new Phaser.Class({
 
 })
 
-
-var MainMenu = new Phaser.Class({  // komponent menu
+    ///////////////////////////////////////////////////////////////////////////// MENU ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    var MainMenu = new Phaser.Class({  // komponent menu
 
     Extends: Phaser.Scene,
 
@@ -97,8 +98,9 @@ var MainMenu = new Phaser.Class({  // komponent menu
     }
 
 })
-
-var Intro = new Phaser.Class({
+    ///////////////////////////////////////////////////////////////////////////// INTRO ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    var Intro = new Phaser.Class({
 
 
     Extends: Phaser.Scene,
@@ -134,12 +136,9 @@ var Intro = new Phaser.Class({
     },
 
 }) 
-
-
-///////////////////////////////////////////////////////////////////////////// STAGE 1  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-var Stage1 = new Phaser.Class({  // poziom pierwszy gry
+    ///////////////////////////////////////////////////////////////////////////// STAGE 1 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    var Stage1 = new Phaser.Class({  // poziom pierwszy gry
 
     Extends: Phaser.Scene,
 
@@ -161,9 +160,6 @@ var Stage1 = new Phaser.Class({  // poziom pierwszy gry
       
         
         sceneElementsStatic = this.physics.add.staticGroup();
-       // intensityPlayerLamp = 4;
-       
-       // game.physics.startSystem(Phaser.physics.ARCADE);
 
 
         this.load.image('groundp', 'assets/ground.png'); //ładowanie konkretnego pliku
@@ -252,7 +248,7 @@ var Stage1 = new Phaser.Class({  // poziom pierwszy gry
 
 
         var i;
-        background = this.add.image(800, 450, 'groundj');
+        background = this.add.image(800, 450, 'groundj'); //generowanie tła
 
         for (hor = 0; hor < 1600;) {
             for (ver = 0; ver < 900;) {
@@ -288,7 +284,7 @@ var Stage1 = new Phaser.Class({  // poziom pierwszy gry
         light = this.lights.addLight(380, 300, 300).setColor(0xffffff).setIntensity(intensityPlayerLamp);
 
 
-        counterText = this.add.text(1040, 30, 'brakujące klucze:  ' + counterKey, { fontSize: '32px', fill: '#999' });
+        counterText = this.add.text(1040, 30, 'brakujące klucze:  ' + counterKey, { fontSize: '32px', fill: '#999' });  //HUD
         LampIntensityText = this.add.text(1040, 60, 'pozostało światła:  ' + intensityPlayerLamp + ' %', { fontSize: '32px', fill: '#999' });
        
 
@@ -310,14 +306,12 @@ var Stage1 = new Phaser.Class({  // poziom pierwszy gry
             newDistance += 35;
         }
         var newDistance = 0;
-        // platform.create(300, 100, 'groundp').setScale(2).refreshBody();
         for(i = 0; i<itop; i++) {  // tworzenie podłogi
             platform.create(0 + newDistance, 906, 'floor').setPipeline('Light2D');
             newDistance += 35;
         }
         newDistance = 0;
 
-        // insideWall.create(500, 500, 'insideWall').setPipeline('Light2D');
    /////////////////////////////////////////////////////////////////////////////////////PLANSZA
         var newDistance = 130;
         for(i=0; i<30; i++) {
@@ -390,7 +384,7 @@ var Stage1 = new Phaser.Class({  // poziom pierwszy gry
    /////////////////////////////////////////////////////////////////////////////////////PLANSZA
 
 
-        // insideWall.setPipeline('Light2D');
+        // PRZEDMIOTY
 
         lamp = this.physics.add.sprite(400, 300, 'lamp');
 
@@ -416,6 +410,8 @@ var Stage1 = new Phaser.Class({  // poziom pierwszy gry
         vase2 = keyPhisics.create(1000, 300, 'vase');
         vase2.setPipeline('Light2D');
 
+        /////// GRACZ
+
         player = this.physics.add.sprite(900, 400, 'hero').setScale(2.5); // wczytanie bohatera
         player.setCollideWorldBounds(true); // dodanie kolizji bohatera, z oknem
 
@@ -436,6 +432,8 @@ var Stage1 = new Phaser.Class({  // poziom pierwszy gry
 
         background.setPipeline('Light2D'); // dodanie efektu światła na backgroundzie (przyciemnienie tła)
 
+        /////FIZYKA I ZDERZENIA
+
         this.physics.add.collider(platform, player);
         this.physics.add.collider(insideWall, player);
         this.physics.add.collider(key1, player, updateCounter1, null, this);
@@ -444,11 +442,7 @@ var Stage1 = new Phaser.Class({  // poziom pierwszy gry
         this.physics.add.collider(key4, player, updateCounter4, null, this);
         this.physics.add.collider(key5, player, updateCounter5, null, this);
         this.physics.add.collider(vase1, player, addLight1, null, this);
-        this.physics.add.collider(vase2, player, addLight2, null, this);
-
-
-
-        // this.physics.add.collider(door, player, openDoor, null, this);   
+        this.physics.add.collider(vase2, player, addLight2, null, this);  
         this.physics.add.overlap(door, player, openDoor);
     },
 
@@ -500,195 +494,778 @@ var Stage1 = new Phaser.Class({  // poziom pierwszy gry
 
   
  
-})
-///////////////////////////////////////////////////////////////////////////// STAGE 2 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    })
+    ///////////////////////////////////////////////////////////////////////////// PRZEJSCIE 1>2 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    var WindowBetweenStage1AndStage2 = new Phaser.Class({
 
-var WindowBetweenStage1AndStage2 = new Phaser.Class({
+        Extends: Phaser.Scene,
 
-    Extends: Phaser.Scene,
+        initialize:
 
-    initialize:
+            function WindowBetweenStage1AndStage2() {
+                Phaser.Scene.call(this, { key: 'windowBetweenStage1AndStage2' });
+            },
 
-    function WindowBetweenStage1AndStage2 ()
-    {
-        Phaser.Scene.call(this, { key: 'windowBetweenStage1AndStage2' });
-    },
+        create: function () {
 
-    create: function () 
-    {
+            this.add.text(500, 300, 'Poziom 2 \n\n\n Udało Ci się zebrać wszystkie klucze i wszedłeś na kolejne piętro. \n\n\n naciśnij spację aby przejść dalej....', // wątek fabularny
+                {
+                    fill: '#fff'
+                });
 
-       this.add.text(500, 300, 'Poziom 2 \n\n\n Udało Ci się zebrać wszystkie klucze i wszedłeś na kolejne piętro. \n\n\n naciśnij spację aby przejść dalej....', // wątek fabularny
-       { fill: '#fff'
-       });
+            this.input.keyboard.on('keydown-SPACE', this.startStage1, this); // ustawienie nasłuchiwania na naciśnięcie spacji
+        },
 
-       this.input.keyboard.on('keydown-SPACE', this.startStage1, this); // ustawienie nasłuchiwania na naciśnięcie spacji
-    },
+        startStage1: function () {   // funkcja która ładuję się po naciśnięciu spacji
+            this.scene.start('stage2');
+        },
+    })
+    ///////////////////////////////////////////////////////////////////////////// STAGE 2 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    var Stage2 = new Phaser.Class({  // poziom drugi gry
 
-    startStage1: function () {   // funkcja która ładuję się po naciśnięciu spacji
-        this.scene.start('stage2');
-    },
-})
+        Extends: Phaser.Scene,
 
-var Stage2 = new Phaser.Class({  // poziom drugi gry
+        initialize:
 
-Extends: Phaser.Scene,
-
-initialize:
-
-function Stage2 () 
-{
-    Phaser.Scene.call(this, { key: 'stage2' });
-},
-
-preload: function() //ładowanie plików do gry (tekstury etc.)
-    {
-        cursors = this.input.keyboard.createCursorKeys(); // dodanie funkcji sterowania postacią
-        platform = this.physics.add.staticGroup();
-        keyPhisics = this.physics.add.staticGroup();
-        backgroundt = this.physics.add.staticGroup();
-        
-        sceneElementsStatic = this.physics.add.staticGroup();
-       
-       // game.physics.startSystem(Phaser.physics.ARCADE);
+            function Stage2() {
+                Phaser.Scene.call(this, { key: 'stage2' });
+            },
 
 
-        this.load.image('groundp', 'assets/ground.png'); //ładowanie konkretnego pliku
-        this.load.image('groundj', 'assets/ground.jpg');
-        this.load.image('floor', 'assets/tile63.png'); 
-        this.load.image('rightWall', 'assets/tile84.png');
-        this.load.image('leftWall', 'assets/tile122.png');
-        this.load.image('topWall', 'assets/tile46.png');
-        this.load.image('door', 'assets/door1.png');
-        this.load.image('lamp', ['assets/torch.png', 'assets/Solid_white.svg.png']);
-        this.load.image('key', 'assets/key2.png');
-        this.load.image('tiles1', 'assets/tile10.png');
-        this.load.image('tiles2', 'assets/tile178.png');
-        this.load.image('tiles3', 'assets/tile4.png');
-        this.load.spritesheet('hero', 'assets/herosprite.png', { frameWidth: 16, frameHeight: 16 });
-
-    },
-
-    create: function() //Funkcje ładowania rzeczy na ekran
-    {
-        var i;
-
-        background = this.add.image(800, 450, 'groundj');
-
-        for (hor = 0; hor < 1600;) {
-            for (ver = 0; ver < 900;) {
-                backgroundt.create(hor, ver, 'tiles3').setPipeline('Light2D');
-                ver += 45;
-            }
-            hor += 45;
-        }
-
-        for (hor = 45; hor < 1600;) {
-            for (ver = 0; ver < 900;) {
-                backgroundt.create(hor, ver, 'tiles2').setPipeline('Light2D');
-                ver += 65;
-            }
-            hor += 78;
-        }
-
-        for (hor = 0; hor < 1600;) {
-            for (ver = 45; ver < 900;) {
-                backgroundt.create(hor, ver, 'tiles1').setPipeline('Light2D');
-                ver += 94;
-            }
-            hor += 85;
-        }
-
-        iwall = 26; //zmienne do ustawiania długości generowanych ścian i sufitów jako równe
-        itop = 46;
-        var counterKey = 3;
-        
-        this.lights.enable().setAmbientColor(0x000000);  // włączanie światła
-        light = this.lights.addLight(380, 300, 300).setColor(0xffffff).setIntensity(1.4);
-        counterText = this.add.text(1260, 50, 'brakujące klucze:  ' + counterKey, { fontSize: '32px', fill: '#999' });
-       
-
-        newDistance = 0;    // tworzenie lewej ściany
-        for(i = 0; i<iwall; i++) {
-            platform.create(20, 0 + newDistance, 'leftWall').setPipeline('Light2D');
-            newDistance += 35;
-        }
-        newDistance = 0;
-
-        for(i = 0; i<iwall; i++) {  // tworzenie prawej ściany
-            platform.create(1580, 0 + newDistance, 'rightWall').setPipeline('Light2D');
-            newDistance += 35;
-        }
-
-        newDistance = 0;  // tworzenie sufitu
-        for(i = 0; i<itop; i++) {
-            platform.create(0 + newDistance, -2, 'topWall').setPipeline('Light2D');
-            newDistance += 35;
-        }
-        var newDistance = 0;
-        // platform.create(300, 100, 'groundp').setScale(2).refreshBody();
-        for(i = 0; i<itop; i++) {  // tworzenie podłogi
-            platform.create(0 + newDistance, 906, 'floor').setPipeline('Light2D');
-            newDistance += 35;
-        }
-        newDistance = 0;
-
-        lamp = this.physics.add.sprite(400, 300, 'lamp');
-
-        lightLamp = this.lights.addLight(380, 300, 300).setColor(0xffffff).setIntensity(0.5); // ustawienie światła dla lampy
-
-        
-        player = this.physics.add.sprite(900, 400, 'hero').setScale(2.5); // wczytanie bohatera w naszym przypadku aktualnie jest to kwadrat
-        player.setCollideWorldBounds(true); // dodanie kolizji bohatera, z oknem
-
-        this.anims.create({
-            key: 'left',
-            frames: [{ key: 'hero', frame: 0 }],
-            frameRate: 10,
-            repeat: -1
-        });
-
-        this.anims.create({
-            key: 'right',
-            frames: [{ key: 'hero', frame: 1 }],
-            frameRate: 10,
-            repeat: -1
-        });
-
-        background.setPipeline('Light2D'); // dodanie efektu światła na backgroundzie (przyciemnienie tła)
-
-
-    },
-
-    update: function () {
-
-
-        if (cursors.left.isDown) {   // sterowanie postacią dla każdego klawisza
-            player.setVelocityX(-Player_Velocity);
-            player.anims.play('left', true); //włączanie animacji przy obrocie postaci
-        } else if (cursors.right.isDown) {
-            player.setVelocityX(Player_Velocity);
-            player.anims.play('right', true); //włączanie animacji przy obrocie postaci
-        } else {
-            player.setVelocityX(0);
-        }
-        if (cursors.up.isDown) {
-            player.setVelocityY(-Player_Velocity);
-        } else if (cursors.down.isDown) {
-            player.setVelocityY(Player_Velocity);
-        } else
+        preload: function () //ładowanie plików do gry (tekstury etc.)
         {
-            player.setVelocityY(0);
+            cursors = this.input.keyboard.createCursorKeys(); // dodanie funkcji sterowania postacią
+            platform = this.physics.add.staticGroup();
+            insideWall = this.physics.add.staticGroup();
+            keyPhisics = this.physics.add.staticGroup();
+            backgroundt = this.physics.add.staticGroup();
+
+
+            sceneElementsStatic = this.physics.add.staticGroup();
+
+
+            this.load.image('groundp', 'assets/ground.png'); //ładowanie konkretnego pliku
+            this.load.image('groundj', 'assets/ground.jpg');
+            this.load.image('floor', 'assets/tile63.png');
+            this.load.image('rightWall', 'assets/tile84.png');
+            this.load.image('leftWall', 'assets/tile122.png');
+            this.load.image('topWall', 'assets/tile46.png');
+            this.load.image('door', ['assets/door1.png', 'assets/Solid_white.svg.png']);
+            this.load.image('lamp', 'assets/torch.png');
+            this.load.image('key', 'assets/key2.png');
+            this.load.image('insideWall', 'assets/tile54.png');
+            this.load.image('insideWallColumn', 'assets/tile55.png');
+            this.load.image('vase', 'assets/vase.png');
+            this.load.image('tiles1', 'assets/tile10.png');
+            this.load.image('tiles2', 'assets/tile178.png');
+            this.load.image('tiles3', 'assets/tile4.png');
+            this.load.spritesheet('hero', 'assets/herosprite.png', { frameWidth: 16, frameHeight: 16 });
+        },
+
+
+
+
+        create: function () //Funkcje ładowania rzeczy na ekran
+        {
+            function updateCounter1() {    // usuwanie klucza pierwszego, 
+                counterKey--;
+                counterText.setText('brakujące klucze:  ' + counterKey);
+                console.log('cd');
+                key1.disableBody(true, true); // usuwanie danego elementu
+            };
+
+            function updateCounter2() {    // usuwanie klucza drugiego, 
+                counterKey--;
+                counterText.setText('brakujące klucze:  ' + counterKey);
+                console.log('cd');
+                key2.disableBody(true, true); // usuwanie danego elementu
+            };
+
+            function updateCounter3() {    // usuwanie klucza trzeciego, 
+                counterKey--;
+                counterText.setText('brakujące klucze:  ' + counterKey);
+                console.log('cd');
+                key3.disableBody(true, true); // usuwanie danego elementu
+            };
+
+            function updateCounter4() {    // usuwanie klucza trzeciego, 
+                counterKey--;
+                counterText.setText('brakujące klucze:  ' + counterKey);
+                console.log('cd');
+                key4.disableBody(true, true); // usuwanie danego elementu
+            };
+
+            function updateCounter5() {    // usuwanie klucza trzeciego, 
+                counterKey--;
+                counterText.setText('brakujące klucze:  ' + counterKey);
+                console.log('cd');
+                key5.disableBody(true, true); // usuwanie danego elementu
+            };
+
+            function addLight1() {
+                intensityPlayerLamp = intensityPlayerLamp + 1;
+                vase1.disableBody(true, true);
+            }
+
+            function addLight2() {
+                intensityPlayerLamp = intensityPlayerLamp + 1;
+                vase2.disableBody(true, true);
+            }
+
+            function openDoor() {   // funkcja odpala się gdy postać dotyka drzwi
+                if (counterKey == 0) {
+                    isTouchingTheDoor = true;
+                }
+
+
+            };
+
+            function onEvent() {
+                intensityPlayerLamp = intensityPlayerLamp - 0.001;
+            };
+
+
+
+
+            var i;
+            counterKey = 5; // ustawienie licznika kluczy
+            isTouchingTheDoor = false; //ustawienie styku z drzwiami do default
+            background = this.add.image(800, 450, 'groundj');
+
+            for (hor = 0; hor < 1600;) {  //generowanie tła
+                for (ver = 0; ver < 900;) {
+                    backgroundt.create(hor, ver, 'tiles3').setPipeline('Light2D');
+                    ver += 45;
+                }
+                hor += 45;
+            }
+
+            for (hor = 45; hor < 1600;) {
+                for (ver = 0; ver < 900;) {
+                    backgroundt.create(hor, ver, 'tiles2').setPipeline('Light2D');
+                    ver += 65;
+                }
+                hor += 78;
+            }
+
+            for (hor = 0; hor < 1600;) {
+                for (ver = 45; ver < 900;) {
+                    backgroundt.create(hor, ver, 'tiles1').setPipeline('Light2D');
+                    ver += 94;
+                }
+                hor += 85;
+            }
+
+            iwall = 26; //zmienne do ustawiania długości generowanych ścian i sufitów jako równe
+            itop = 46;
+            intensityPlayerLamp = 1.001;
+
+            lampTimedEvent = this.time.addEvent({ delay: 50, callback: onEvent, callbackScope: this, loop: true }); // tworzenie zdarzenia dla interwału czasowego ///////////////////////////////////////////////
+
+            this.lights.enable().setAmbientColor(0x000000);  // włączanie światła
+            light = this.lights.addLight(380, 300, 300).setColor(0xffffff).setIntensity(intensityPlayerLamp);
+
+
+            counterText = this.add.text(1040, 30, 'brakujące klucze:  ' + counterKey, { fontSize: '32px', fill: '#999' });
+            LampIntensityText = this.add.text(1040, 60, 'pozostało światła:  ' + intensityPlayerLamp + ' %', { fontSize: '32px', fill: '#999' });
+
+
+            newDistance = 0;    // tworzenie lewej ściany
+            for (i = 0; i < iwall; i++) {
+                platform.create(20, 0 + newDistance, 'leftWall').setPipeline('Light2D');
+                newDistance += 35;
+            }
+            newDistance = 0;
+
+            for (i = 0; i < iwall; i++) {  // tworzenie prawej ściany
+                platform.create(1580, 0 + newDistance, 'rightWall').setPipeline('Light2D');
+                newDistance += 35;
+            }
+
+            newDistance = 0;  // tworzenie sufitu
+            for (i = 0; i < itop; i++) {
+                platform.create(0 + newDistance, -2, 'topWall').setPipeline('Light2D');
+                newDistance += 35;
+            }
+            var newDistance = 0;
+            for (i = 0; i < itop; i++) {  // tworzenie podłogi
+                platform.create(0 + newDistance, 906, 'floor').setPipeline('Light2D');
+                newDistance += 35;
+            }
+            newDistance = 0;
+
+            /////////////////////////////////////////////////////////////////////////////////////PLANSZA
+            var newDistance = 130;
+            for (i = 0; i < 30; i++) {
+                insideWall.create(newDistance, 800, 'insideWall').setPipeline('Light2D');
+                newDistance += platformDistance;
+            }
+
+            var newDistance = 100;
+            for (i = 0; i < 12; i++) {
+                insideWall.create(120, newDistance, 'insideWallColumn').setPipeline('Light2D');
+                newDistance += platformDistance;
+            }
+
+            var newDistance = 60;
+            for (i = 0; i < 14; i++) {
+                insideWall.create(220, newDistance, 'insideWallColumn').setPipeline('Light2D');
+                newDistance += platformDistance;
+            }
+
+            var newDistance = 130;
+            for (i = 0; i < 25; i++) {
+                insideWall.create(newDistance, 720, 'insideWall').setPipeline('Light2D');
+                newDistance += platformDistance;
+            }
+
+            var newDistance = 330;
+            for (i = 0; i < 15; i++) {
+                insideWall.create(newDistance, 100, 'insideWall').setPipeline('Light2D');
+                newDistance += platformDistance;
+            }
+
+            var newDistance = 370;
+            for (i = 0; i < 25; i++) {
+                insideWall.create(newDistance, 170, 'insideWall').setPipeline('Light2D');
+                newDistance += platformDistance;
+            }
+            var newDistance = 190;
+            for (i = 0; i < 10; i++) {
+                insideWall.create(340, newDistance, 'insideWallColumn').setPipeline('Light2D');
+                newDistance += platformDistance;
+            }
+            var newDistance = 190;
+            for (i = 0; i < 6; i++) {
+                insideWall.create(700, newDistance, 'insideWallColumn').setPipeline('Light2D');
+                newDistance += platformDistance;
+            }
+            var newDistance = 190;
+            for (i = 0; i < 12; i++) {
+                insideWall.create(1400, newDistance, 'insideWallColumn').setPipeline('Light2D');
+                newDistance += platformDistance;
+            }
+            var newDistance = 370;
+            for (i = 0; i < 20; i++) {
+                insideWall.create(newDistance, 560, 'insideWall').setPipeline('Light2D');
+                newDistance += platformDistance;
+            }
+            var newDistance = 370;
+            for (i = 0; i < 20; i++) {
+                insideWall.create(newDistance, 640, 'insideWall').setPipeline('Light2D');
+                newDistance += platformDistance;
+            }
+            var newDistance = 720;
+            for (i = 0; i < 12; i++) {
+                insideWall.create(newDistance, 460, 'insideWall').setPipeline('Light2D');
+                newDistance += platformDistance;
+            }
+            
+
+
+            /////////////////////////////////////////////////////////////////////////////////////PLANSZA
+
+
+            // PRZEDMIOTY
+
+            lamp = this.physics.add.sprite(400, 300, 'lamp');
+
+            lightLamp = this.lights.addLight(380, 300, 300).setColor(0xffffff).setIntensity(1.3); // ustawienie światła dla lampy
+            door = this.physics.add.staticImage(80, 436, 'door');
+            door.setPipeline('Light2D');  // funkcja która sprawia, że drzwi działają ze światłem
+
+            key1 = keyPhisics.create(80, 60, 'key');  // tworzenie klucza nr1
+            key2 = keyPhisics.create(1500, 60, 'key');  // tworzenie klucza nr1
+            key3 = keyPhisics.create(1500, 840, 'key');  // tworzenie klucza nr1
+            key4 = keyPhisics.create(400, 600, 'key');  // tworzenie klucza nr1
+            key5 = keyPhisics.create(1500, 250, 'key');  // tworzenie klucza nr1
+
+            key1.setPipeline('Light2D'); //oddziaływanie światła na klucze
+            key2.setPipeline('Light2D');
+            key3.setPipeline('Light2D');
+            key4.setPipeline('Light2D');
+            key5.setPipeline('Light2D');
+
+            vase1 = keyPhisics.create(1000, 400, 'vase'); //zbiorniki z olejem do lampy
+            vase1.setPipeline('Light2D');
+
+            vase2 = keyPhisics.create(1000, 300, 'vase');
+            vase2.setPipeline('Light2D');
+
+            /////// GRACZ
+
+            player = this.physics.add.sprite(900, 400, 'hero').setScale(2.5); // wczytanie bohatera
+            player.setCollideWorldBounds(true); // dodanie kolizji bohatera, z oknem
+
+            this.anims.create({ //animacje obrotu postaci
+                key: 'left',
+                frames: [{ key: 'hero', frame: 0 }],
+                frameRate: 10,
+                repeat: -1
+            });
+
+            this.anims.create({
+                key: 'right',
+                frames: [{ key: 'hero', frame: 1 }],
+                frameRate: 10,
+                repeat: -1
+            });
+
+
+            background.setPipeline('Light2D'); // dodanie efektu światła na backgroundzie (przyciemnienie tła)
+
+            /////FIZYKA I ZDERZENIA
+
+            this.physics.add.collider(platform, player);
+            this.physics.add.collider(insideWall, player);
+            this.physics.add.collider(key1, player, updateCounter1, null, this);
+            this.physics.add.collider(key2, player, updateCounter2, null, this);
+            this.physics.add.collider(key3, player, updateCounter3, null, this);
+            this.physics.add.collider(key4, player, updateCounter4, null, this);
+            this.physics.add.collider(key5, player, updateCounter5, null, this);
+            this.physics.add.collider(vase1, player, addLight1, null, this);
+            this.physics.add.collider(vase2, player, addLight2, null, this);
+            this.physics.add.overlap(door, player, openDoor);
+        },
+
+        update: function () {
+
+            function onEvent1() {
+                this.scene.start('windowBetweenStage2AndStage3'); //przejście do następnej sceny
+            };
+
+            function onEvent2() {
+                this.scene.start('Gameoverscreen'); //ekran game over
+            };
+
+            if (cursors.left.isDown) {   // sterowanie postacią dla każdego klawisza
+                player.setVelocityX(-Player_Velocity);
+                player.anims.play('left', true); //włączanie animacji przy obrocie postaci
+            } else if (cursors.right.isDown) {
+                player.setVelocityX(Player_Velocity);
+                player.anims.play('right', true); //włączanie animacji przy obrocie postaci
+            } else {
+                player.setVelocityX(0);
+            }
+            if (cursors.up.isDown) {
+                player.setVelocityY(-Player_Velocity);
+            } else if (cursors.down.isDown) {
+                player.setVelocityY(Player_Velocity);
+            } else {
+                player.setVelocityY(0);
+            }
+
+            light.x = player.x; // ustawienie światła w pozycji bohatera
+            light.y = player.y;
+
+
+            if (counterKey == 0 && isTouchingTheDoor) //sprawdzenie czy zebrane zostały klucze i gracz jest przy drzwiach
+            {
+                lampTimedEvent = this.time.addEvent({ delay: 900, callback: onEvent1, callbackScope: this, loop: false })   // wywołanie funkcji z opóżnieniem
+            }
+
+            if (intensityPlayerLamp <= 0) //sprawdzenie mocy lampy przegrana jeśli dojdzie do 0
+            {
+                lampTimedEvent = this.time.addEvent({ delay: 100, callback: onEvent2, callbackScope: this, loop: false }) //wywołanie funkcji z opóźnieniem
+            }
+
+            light.setIntensity(intensityPlayerLamp);
+            LampIntensityText.setText('pozostało światła:  ' + (intensityPlayerLamp * 25).toFixed(1) + ' %');
+
         }
 
-        light.x = player.x; // ustawienie światła w pozycji bohatera
-        light.y = player.y;
-    }
-})
 
-    ///////////////////////////////////////////////////////////////////////////// GAME OVER ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+    })
+    ///////////////////////////////////////////////////////////////////////////// STAGE 2>3 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    var WindowBetweenStage2AndStage3 = new Phaser.Class({
+
+        Extends: Phaser.Scene,
+
+        initialize:
+
+            function WindowBetweenStage2AndStage3() {
+                Phaser.Scene.call(this, { key: 'windowBetweenStage2AndStage3' });
+            },
+
+        create: function () {
+
+            this.add.text(200, 300, 'Poziom 3 \n\n\n Udało Ci się zebrać wszystkie klucze i wszedłeś na 3 piętro. Czujesz już powiew świeżego wiatru. Wyjście musi być blisko. \n\n\n naciśnij spację aby przejść dalej....', // wątek fabularny
+                {
+                    fill: '#fff'
+                });
+
+            this.input.keyboard.on('keydown-SPACE', this.startStage1, this); // ustawienie nasłuchiwania na naciśnięcie spacji
+        },
+
+        startStage1: function () {   // funkcja która ładuję się po naciśnięciu spacji
+            this.scene.start('stage3');
+        }
+    })
+    ///////////////////////////////////////////////////////////////////////////// STAGE 3 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    var Stage3 = new Phaser.Class({  // poziom trzeci gry
+
+        Extends: Phaser.Scene,
+
+        initialize:
+
+            function Stage3() {
+                Phaser.Scene.call(this, { key: 'stage3' });
+            },
+
+
+        preload: function () //ładowanie plików do gry (tekstury etc.)
+        {
+            cursors = this.input.keyboard.createCursorKeys(); // dodanie funkcji sterowania postacią
+            platform = this.physics.add.staticGroup();
+            insideWall = this.physics.add.staticGroup();
+            keyPhisics = this.physics.add.staticGroup();
+            backgroundt = this.physics.add.staticGroup();
+
+
+            sceneElementsStatic = this.physics.add.staticGroup();
+
+
+            this.load.image('groundp', 'assets/ground.png'); //ładowanie konkretnego pliku
+            this.load.image('groundj', 'assets/ground.jpg');
+            this.load.image('floor', 'assets/tile63.png');
+            this.load.image('rightWall', 'assets/tile84.png');
+            this.load.image('leftWall', 'assets/tile122.png');
+            this.load.image('topWall', 'assets/tile46.png');
+            this.load.image('door', ['assets/door1.png', 'assets/Solid_white.svg.png']);
+            this.load.image('lamp', 'assets/torch.png');
+            this.load.image('key', 'assets/key2.png');
+            this.load.image('insideWall', 'assets/tile54.png');
+            this.load.image('insideWallColumn', 'assets/tile55.png');
+            this.load.image('vase', 'assets/vase.png');
+            this.load.image('tiles1', 'assets/tile10.png');
+            this.load.image('tiles2', 'assets/tile178.png');
+            this.load.image('tiles3', 'assets/tile4.png');
+            this.load.spritesheet('hero', 'assets/herosprite.png', { frameWidth: 16, frameHeight: 16 });
+        },
+
+
+
+
+        create: function () //Funkcje ładowania rzeczy na ekran
+        {
+            function updateCounter1() {    // usuwanie klucza pierwszego, 
+                counterKey--;
+                counterText.setText('brakujące klucze:  ' + counterKey);
+                console.log('cd');
+                key1.disableBody(true, true); // usuwanie danego elementu
+            };
+
+            function updateCounter2() {    // usuwanie klucza drugiego, 
+                counterKey--;
+                counterText.setText('brakujące klucze:  ' + counterKey);
+                console.log('cd');
+                key2.disableBody(true, true); // usuwanie danego elementu
+            };
+
+            function updateCounter3() {    // usuwanie klucza trzeciego, 
+                counterKey--;
+                counterText.setText('brakujące klucze:  ' + counterKey);
+                console.log('cd');
+                key3.disableBody(true, true); // usuwanie danego elementu
+            };
+
+            function updateCounter4() {    // usuwanie klucza trzeciego, 
+                counterKey--;
+                counterText.setText('brakujące klucze:  ' + counterKey);
+                console.log('cd');
+                key4.disableBody(true, true); // usuwanie danego elementu
+            };
+
+            function updateCounter5() {    // usuwanie klucza trzeciego, 
+                counterKey--;
+                counterText.setText('brakujące klucze:  ' + counterKey);
+                console.log('cd');
+                key5.disableBody(true, true); // usuwanie danego elementu
+            };
+
+            function addLight1() {
+                intensityPlayerLamp = intensityPlayerLamp + 1;
+                vase1.disableBody(true, true);
+            }
+
+            function addLight2() {
+                intensityPlayerLamp = intensityPlayerLamp + 1;
+                vase2.disableBody(true, true);
+            }
+
+            function openDoor() {   // funkcja odpala się gdy postać dotyka drzwi
+                if (counterKey == 0) {
+                    isTouchingTheDoor = true;
+                }
+
+
+            };
+
+            function onEvent() {
+                intensityPlayerLamp = intensityPlayerLamp - 0.001;
+            };
+
+
+
+
+            var i;
+            counterKey = 5; // ustawienie licznika kluczy
+            isTouchingTheDoor = false; //ustawienie styku z drzwiami do default
+            background = this.add.image(800, 450, 'groundj'); //Generowanie Tła
+
+            for (hor = 0; hor < 1600;) {
+                for (ver = 0; ver < 900;) {
+                    backgroundt.create(hor, ver, 'tiles3').setPipeline('Light2D');
+                    ver += 45;
+                }
+                hor += 45;
+            }
+
+            for (hor = 45; hor < 1600;) {
+                for (ver = 0; ver < 900;) {
+                    backgroundt.create(hor, ver, 'tiles2').setPipeline('Light2D');
+                    ver += 65;
+                }
+                hor += 78;
+            }
+
+            for (hor = 0; hor < 1600;) {
+                for (ver = 45; ver < 900;) {
+                    backgroundt.create(hor, ver, 'tiles1').setPipeline('Light2D');
+                    ver += 94;
+                }
+                hor += 85;
+            }
+
+            iwall = 26; //zmienne do ustawiania długości generowanych ścian i sufitów jako równe
+            itop = 46;
+            intensityPlayerLamp = 1.001;
+
+            lampTimedEvent = this.time.addEvent({ delay: 50, callback: onEvent, callbackScope: this, loop: true }); // tworzenie zdarzenia dla interwału czasowego ///////////////////////////////////////////////
+
+            this.lights.enable().setAmbientColor(0x000000);  // włączanie światła
+            light = this.lights.addLight(380, 300, 300).setColor(0xffffff).setIntensity(intensityPlayerLamp);
+
+
+            counterText = this.add.text(1040, 30, 'brakujące klucze:  ' + counterKey, { fontSize: '32px', fill: '#999' });
+            LampIntensityText = this.add.text(1040, 60, 'pozostało światła:  ' + intensityPlayerLamp + ' %', { fontSize: '32px', fill: '#999' });
+
+
+            newDistance = 0;    // tworzenie lewej ściany
+            for (i = 0; i < iwall; i++) {
+                platform.create(20, 0 + newDistance, 'leftWall').setPipeline('Light2D');
+                newDistance += 35;
+            }
+            newDistance = 0;
+
+            for (i = 0; i < iwall; i++) {  // tworzenie prawej ściany
+                platform.create(1580, 0 + newDistance, 'rightWall').setPipeline('Light2D');
+                newDistance += 35;
+            }
+
+            newDistance = 0;  // tworzenie sufitu
+            for (i = 0; i < itop; i++) {
+                platform.create(0 + newDistance, -2, 'topWall').setPipeline('Light2D');
+                newDistance += 35;
+            }
+            var newDistance = 0;
+            for (i = 0; i < itop; i++) {  // tworzenie podłogi
+                platform.create(0 + newDistance, 906, 'floor').setPipeline('Light2D');
+                newDistance += 35;
+            }
+            newDistance = 0;
+
+            /////////////////////////////////////////////////////////////////////////////////////PLANSZA
+            
+            var newDistance = 130;
+            for (i = 0; i < 30; i++) {
+                insideWall.create(newDistance, 800, 'insideWall').setPipeline('Light2D');
+                newDistance += platformDistance;
+            }
+
+            var newDistance = 100;
+            for (i = 0; i < 12; i++) {
+                insideWall.create(120, newDistance, 'insideWallColumn').setPipeline('Light2D');
+                newDistance += platformDistance;
+            }
+
+            var newDistance = 60;
+            for (i = 0; i < 14; i++) {
+                insideWall.create(220, newDistance, 'insideWallColumn').setPipeline('Light2D');
+                newDistance += platformDistance;
+            }
+
+            var newDistance = 130;
+            for (i = 0; i < 25; i++) {
+                insideWall.create(newDistance, 720, 'insideWall').setPipeline('Light2D');
+                newDistance += platformDistance;
+            }
+
+            var newDistance = 330;
+            for (i = 0; i < 15; i++) {
+                insideWall.create(newDistance, 100, 'insideWall').setPipeline('Light2D');
+                newDistance += platformDistance;
+            }
+
+            var newDistance = 370;
+            for (i = 0; i < 25; i++) {
+                insideWall.create(newDistance, 170, 'insideWall').setPipeline('Light2D');
+                newDistance += platformDistance;
+            }
+            var newDistance = 190;
+            for (i = 0; i < 10; i++) {
+                insideWall.create(340, newDistance, 'insideWallColumn').setPipeline('Light2D');
+                newDistance += platformDistance;
+            }
+            var newDistance = 190;
+            for (i = 0; i < 6; i++) {
+                insideWall.create(700, newDistance, 'insideWallColumn').setPipeline('Light2D');
+                newDistance += platformDistance;
+            }
+            var newDistance = 190;
+            for (i = 0; i < 12; i++) {
+                insideWall.create(1400, newDistance, 'insideWallColumn').setPipeline('Light2D');
+                newDistance += platformDistance;
+            }
+            var newDistance = 370;
+            for (i = 0; i < 20; i++) {
+                insideWall.create(newDistance, 560, 'insideWall').setPipeline('Light2D');
+                newDistance += platformDistance;
+            }
+            var newDistance = 370;
+            for (i = 0; i < 20; i++) {
+                insideWall.create(newDistance, 640, 'insideWall').setPipeline('Light2D');
+                newDistance += platformDistance;
+            }
+            var newDistance = 720;
+            for (i = 0; i < 12; i++) {
+                insideWall.create(newDistance, 460, 'insideWall').setPipeline('Light2D');
+                newDistance += platformDistance;
+            }
+            
+
+
+            /////////////////////////////////////////////////////////////////////////////////////PLANSZA
+
+
+            // PRZEDMIOTY
+
+            lamp = this.physics.add.sprite(400, 300, 'lamp');
+
+            lightLamp = this.lights.addLight(380, 300, 300).setColor(0xffffff).setIntensity(1.3); // ustawienie światła dla lampy
+            door = this.physics.add.staticImage(80, 436, 'door');
+            door.setPipeline('Light2D');  // funkcja która sprawia, że drzwi działają ze światłem
+
+            key1 = keyPhisics.create(80, 60, 'key');  // tworzenie klucza nr1
+            key2 = keyPhisics.create(1500, 60, 'key');  // tworzenie klucza nr1
+            key3 = keyPhisics.create(1500, 840, 'key');  // tworzenie klucza nr1
+            key4 = keyPhisics.create(400, 600, 'key');  // tworzenie klucza nr1
+            key5 = keyPhisics.create(1500, 250, 'key');  // tworzenie klucza nr1
+
+            key1.setPipeline('Light2D'); //oddziaływanie światła na klucze
+            key2.setPipeline('Light2D');
+            key3.setPipeline('Light2D');
+            key4.setPipeline('Light2D');
+            key5.setPipeline('Light2D');
+
+            vase1 = keyPhisics.create(1000, 400, 'vase'); //zbiorniki z olejem do lampy
+            vase1.setPipeline('Light2D');
+
+            vase2 = keyPhisics.create(1000, 300, 'vase');
+            vase2.setPipeline('Light2D');
+
+            /////// GRACZ
+
+            player = this.physics.add.sprite(900, 400, 'hero').setScale(2.5); // wczytanie bohatera
+            player.setCollideWorldBounds(true); // dodanie kolizji bohatera, z oknem
+
+            this.anims.create({ //animacje obrotu postaci
+                key: 'left',
+                frames: [{ key: 'hero', frame: 0 }],
+                frameRate: 10,
+                repeat: -1
+            });
+
+            this.anims.create({
+                key: 'right',
+                frames: [{ key: 'hero', frame: 1 }],
+                frameRate: 10,
+                repeat: -1
+            });
+
+
+            background.setPipeline('Light2D'); // dodanie efektu światła na backgroundzie (przyciemnienie tła)
+
+            /////FIZYKA I ZDERZENIA
+
+            this.physics.add.collider(platform, player);
+            this.physics.add.collider(insideWall, player);
+            this.physics.add.collider(key1, player, updateCounter1, null, this);
+            this.physics.add.collider(key2, player, updateCounter2, null, this);
+            this.physics.add.collider(key3, player, updateCounter3, null, this);
+            this.physics.add.collider(key4, player, updateCounter4, null, this);
+            this.physics.add.collider(key5, player, updateCounter5, null, this);
+            this.physics.add.collider(vase1, player, addLight1, null, this);
+            this.physics.add.collider(vase2, player, addLight2, null, this);
+            this.physics.add.overlap(door, player, openDoor);
+        },
+
+        update: function () {
+
+            function onEvent1() {
+                this.scene.start('Gameending'); //przejście do następnej sceny
+            };
+
+            function onEvent2() {
+                this.scene.start('Gameoverscreen'); //ekran game over
+            };
+
+            if (cursors.left.isDown) {   // sterowanie postacią dla każdego klawisza
+                player.setVelocityX(-Player_Velocity);
+                player.anims.play('left', true); //włączanie animacji przy obrocie postaci
+            } else if (cursors.right.isDown) {
+                player.setVelocityX(Player_Velocity);
+                player.anims.play('right', true); //włączanie animacji przy obrocie postaci
+            } else {
+                player.setVelocityX(0);
+            }
+            if (cursors.up.isDown) {
+                player.setVelocityY(-Player_Velocity);
+            } else if (cursors.down.isDown) {
+                player.setVelocityY(Player_Velocity);
+            } else {
+                player.setVelocityY(0);
+            }
+
+            light.x = player.x; // ustawienie światła w pozycji bohatera
+            light.y = player.y;
+
+
+            if (counterKey == 0 && isTouchingTheDoor) //sprawdzenie czy zebrane zostały klucze i gracz jest przy drzwiach
+            {
+                lampTimedEvent = this.time.addEvent({ delay: 900, callback: onEvent1, callbackScope: this, loop: false })   // wywołanie funkcji z opóżnieniem
+            }
+
+            if (intensityPlayerLamp <= 0) //sprawdzenie mocy lampy przegrana jeśli dojdzie do 0
+            {
+                lampTimedEvent = this.time.addEvent({ delay: 100, callback: onEvent2, callbackScope: this, loop: false }) //wywołanie funkcji z opóźnieniem
+            }
+
+            light.setIntensity(intensityPlayerLamp);
+            LampIntensityText.setText('pozostało światła:  ' + (intensityPlayerLamp * 25).toFixed(1) + ' %');
+
+        }
+
+
+
+    })
+    ///////////////////////////////////////////////////////////////////////////// GAME OVER /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     var Gameoverscreen = new Phaser.Class({
 
         Extends: Phaser.Scene,
@@ -713,7 +1290,32 @@ preload: function() //ładowanie plików do gry (tekstury etc.)
             this.scene.start('intro');
         },
     })
+    ///////////////////////////////////////////////////////////////////////////// GAME ENDING /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    var Gameending = new Phaser.Class({ //Scena zakończenia
 
+        Extends: Phaser.Scene,
+
+        initialize:
+
+            function Gameending() {
+                Phaser.Scene.call(this, { key: 'Gameending' });
+            },
+
+        create: function () {
+
+            this.add.text(200, 300, 'WOLNOŚĆ!!! \n\n\n Świeże powietrze to pierwsze co czujesz przechodząc przez ostatnie drzwi. Wolny nareszcie wolny! Zostawiłeś ten przytłaczający mrok za sobą. \n Ciągle zostaje jeszcze pytanie. Jak się tam znalazłeś... \n\n\n naciśnij spację aby wrócić do menu....', // wątek fabularny
+                {
+                    fill: '#fff'
+                });
+
+            this.input.keyboard.on('keydown-SPACE', this.startStage1, this); // ustawienie nasłuchiwania na naciśnięcie spacji
+        },
+
+        startStage1: function () {   // funkcja która ładuję się po naciśnięciu spacji
+            this.scene.start('mainmenu');
+        },
+    })
 
 var config = {
         type: Phaser.WEBGL, //sposób renderowania grafiki
@@ -728,7 +1330,7 @@ var config = {
         },
 
         scene: [
-         Preloader, MainMenu, Stage1, WindowBetweenStage1AndStage2, Stage2, Intro, Gameoverscreen
+            Preloader, MainMenu, Intro, Stage1, WindowBetweenStage1AndStage2, Stage2, WindowBetweenStage2AndStage3, Stage3, Gameending, Gameoverscreen
     ],
        
         plugins: {
