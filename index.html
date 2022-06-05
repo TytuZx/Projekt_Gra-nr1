@@ -54,7 +54,7 @@ var Preloader = new Phaser.Class({
     preload: function()
     {
         this.load.image('buttonStart', 'assets/PlayButton2.png');
-        this.scene.start('stage2');
+        this.scene.start('stage3');
     }
 
 
@@ -281,7 +281,7 @@ var Preloader = new Phaser.Class({
         lampTimedEvent = this.time.addEvent({ delay: 50, callback: onEvent, callbackScope: this, loop: true }); // tworzenie zdarzenia dla interwału czasowego ///////////////////////////////////////////////
           
         this.lights.enable().setAmbientColor(0x000000);  // włączanie światła
-        light = this.lights.addLight(380, 300, 300).setColor(0xffffff).setIntensity(intensityPlayerLamp);
+        light = this.lights.addLight(380, 300, 200).setColor(0xffffff).setIntensity(intensityPlayerLamp);
 
 
         counterText = this.add.text(1040, 30, 'brakujące klucze:  ' + counterKey, { fontSize: '32px', fill: '#999' });  //HUD
@@ -386,9 +386,9 @@ var Preloader = new Phaser.Class({
 
         // PRZEDMIOTY
 
-        lamp = this.physics.add.sprite(400, 300, 'lamp');
+        lamp = this.physics.add.sprite(45, 430, 'lamp');
+        lightLamp = this.lights.addLight(45, 430, 100).setColor(0xffffff).setIntensity(1.3); // ustawienie światła dla lampy
 
-        lightLamp = this.lights.addLight(380, 300, 300).setColor(0xffffff).setIntensity(1.3); // ustawienie światła dla lampy
         door = this.physics.add.staticImage(80, 436, 'door');  
         door.setPipeline('Light2D');  // funkcja która sprawia, że drzwi działają ze światłem
 
@@ -479,7 +479,7 @@ var Preloader = new Phaser.Class({
        
         if (counterKey == 0 && isTouchingTheDoor) //sprawdzenie czy zebrane zostały klucze i gracz jest przy drzwiach
         {
-            lampTimedEvent = this.time.addEvent({ delay: 900, callback: onEvent1, callbackScope: this, loop: false })   // wywołanie funkcji z opóżnieniem
+            lampTimedEvent = this.time.addEvent({ delay: 500, callback: onEvent1, callbackScope: this, loop: false })   // wywołanie funkcji z opóżnieniem
         }
 
         if (intensityPlayerLamp <= 0) //sprawdzenie mocy lampy przegrana jeśli dojdzie do 0
@@ -509,7 +509,7 @@ var Preloader = new Phaser.Class({
 
         create: function () {
 
-            this.add.text(500, 300, 'Poziom 2 \n\n\n Udało Ci się zebrać wszystkie klucze i wszedłeś na kolejne piętro. \n\n\n naciśnij spację aby przejść dalej....', // wątek fabularny
+            this.add.text(500, 300, 'Poziom 2 \n\n\n Udało Ci się zebrać wszystkie klucze i wszedłeś na kolejne piętro. Czujesz jakby coś się paliło... \n\n\n naciśnij spację aby przejść dalej....', // wątek fabularny
                 {
                     fill: '#fff'
                 });
@@ -678,6 +678,7 @@ var Preloader = new Phaser.Class({
             isTouchingTheDoor = false; //ustawienie styku z drzwiami do default
             hasExtinguishers = false;
             touchFire = false;
+
             background = this.add.image(800, 450, 'groundj');
 
             for (hor = 0; hor < 1600;) {  //generowanie tła
@@ -961,9 +962,6 @@ var Preloader = new Phaser.Class({
             function onEvent3() {
                 this.scene.start('Gameoverfirescreen');
             }
-            if (touchFire) {
-                PlayerTouchFire = this.time.addEvent({ delay: 900, callback: onEvent3, callbackScope: this, loop: false }) 
-            }
 
             if (cursors.left.isDown) {   // sterowanie postacią dla każdego klawisza
                 player.setVelocityX(-Player_Velocity);
@@ -994,6 +992,10 @@ var Preloader = new Phaser.Class({
             if (intensityPlayerLamp <= 0) //sprawdzenie mocy lampy przegrana jeśli dojdzie do 0
             {
                 lampTimedEvent = this.time.addEvent({ delay: 100, callback: onEvent2, callbackScope: this, loop: false }) //wywołanie funkcji z opóźnieniem
+            }
+
+            if (touchFire) {
+                PlayerTouchFire = this.time.addEvent({ delay: 100, callback: onEvent3, callbackScope: this, loop: false })
             }
 
             light.setIntensity(intensityPlayerLamp);
@@ -1050,6 +1052,9 @@ var Preloader = new Phaser.Class({
             insideWall = this.physics.add.staticGroup();
             keyPhisics = this.physics.add.staticGroup();
             backgroundt = this.physics.add.staticGroup();
+            fires = this.physics.add.staticGroup();
+            extinguishers = this.physics.add.staticGroup();
+            spikes = this.physics.add.staticGroup();
 
 
             sceneElementsStatic = this.physics.add.staticGroup();
@@ -1070,6 +1075,11 @@ var Preloader = new Phaser.Class({
             this.load.image('tiles1', 'assets/tile10.png');
             this.load.image('tiles2', 'assets/tile178.png');
             this.load.image('tiles3', 'assets/tile4.png');
+            this.load.image('fire', 'assets/fire.gif');
+            this.load.image('extinguisher', 'assets/extinguisher.png');
+            this.load.image('spikes', 'assets/spikes.png');
+
+
             this.load.spritesheet('hero', 'assets/herosprite.png', { frameWidth: 16, frameHeight: 16 });
         },
 
@@ -1135,12 +1145,56 @@ var Preloader = new Phaser.Class({
                 intensityPlayerLamp = intensityPlayerLamp - 0.001;
             };
 
+            function takeExtinguishers() {
+                hasExtinguishers = true;
+                extinguisherText.setText('GAŚNICA!');
+                extinguishers1.disableBody(true, true);
+            }
+
+            function fire1Collider() {
+                if (hasExtinguishers) {
+                    fire1.disableBody(true, true);
+                    fireLight1.setIntensity(0);
+                }
+                else {
+                    touchFire = true;
+                }
+            }
+
+            function fire2Collider() {
+                if (hasExtinguishers) {
+                    fire2.disableBody(true, true);
+                    fireLight2.setIntensity(0);
+
+                }
+                else {
+                    touchFire = true;
+                }
+            }
+            function fire3Collider() {
+                if (hasExtinguishers) {
+                    fire3.disableBody(true, true);
+                    fireLight3.setIntensity(0);
+
+                }
+                else {
+                    touchFire = true;
+                }
+            }
+
+            function spikesCollider() {
+                touchSpikes = true;
+            }
 
 
 
             var i;
             counterKey = 5; // ustawienie licznika kluczy
             isTouchingTheDoor = false; //ustawienie styku z drzwiami do default
+            hasExtinguishers = false;
+            touchFire = false;
+            touchSpikes = false;
+
             background = this.add.image(800, 450, 'groundj'); //Generowanie Tła
 
             for (hor = 0; hor < 1600;) {
@@ -1304,6 +1358,28 @@ var Preloader = new Phaser.Class({
             vase2 = keyPhisics.create(1000, 300, 'vase');
             vase2.setPipeline('Light2D');
 
+            extinguishers1 = extinguishers.create(70, 800, 'extinguisher').setPipeline('Light2D');
+
+            fire1 = fires.create(850, 450, 'fire').setScale(2);
+            fire2 = fires.create(800, 450, 'fire').setScale(2);
+            fire3 = fires.create(750, 450, 'fire').setScale(2);
+
+            fireLight1 = this.lights.addLight(850, 450, 300).setColor(0xFF0000).setIntensity(1.3);
+            fireLight2 = this.lights.addLight(800, 450, 300).setColor(0xFF0000).setIntensity(1.3);
+            fireLight3 = this.lights.addLight(750, 450, 300).setColor(0xFF0000).setIntensity(1.3);
+
+            spikes1 = spikes.create(1000, 400, 'spikes');
+            spikes2 = spikes.create(1000, 450, 'spikes');
+            spikes3 = spikes.create(1000, 500, 'spikes');
+            spikes4 = spikes.create(1000, 550, 'spikes');
+            spikes5 = spikes.create(1000, 600, 'spikes');
+
+            spikes1.setPipeline('Light2D');
+            spikes2.setPipeline('Light2D');
+            spikes3.setPipeline('Light2D');
+            spikes4.setPipeline('Light2D');
+            spikes5.setPipeline('Light2D');
+
             /////// GRACZ
 
             player = this.physics.add.sprite(900, 400, 'hero').setScale(2.5); // wczytanie bohatera
@@ -1338,6 +1414,15 @@ var Preloader = new Phaser.Class({
             this.physics.add.collider(vase1, player, addLight1, null, this);
             this.physics.add.collider(vase2, player, addLight2, null, this);
             this.physics.add.overlap(door, player, openDoor);
+            this.physics.add.collider(extinguishers1, player, takeExtinguishers, null, this);
+            this.physics.add.collider(fire1, player, fire1Collider, null, this);
+            this.physics.add.collider(fire2, player, fire2Collider, null, this);
+            this.physics.add.collider(fire3, player, fire3Collider, null, this);
+            this.physics.add.collider(spikes1, player, spikesCollider, null, this);
+            this.physics.add.collider(spikes2, player, spikesCollider, null, this);
+            this.physics.add.collider(spikes3, player, spikesCollider, null, this);
+            this.physics.add.collider(spikes4, player, spikesCollider, null, this);
+            this.physics.add.collider(spikes5, player, spikesCollider, null, this);
         },
 
         update: function () {
@@ -1349,6 +1434,14 @@ var Preloader = new Phaser.Class({
             function onEvent2() {
                 this.scene.start('Gameoverscreen'); //ekran game over
             };
+
+            function onEvent3() {
+                this.scene.start('Gameoverfirescreen');
+            }
+
+            function onEvent4() {
+                this.scene.start('Gameoverspikes');
+            }
 
             if (cursors.left.isDown) {   // sterowanie postacią dla każdego klawisza
                 player.setVelocityX(-Player_Velocity);
@@ -1373,12 +1466,20 @@ var Preloader = new Phaser.Class({
 
             if (counterKey == 0 && isTouchingTheDoor) //sprawdzenie czy zebrane zostały klucze i gracz jest przy drzwiach
             {
-                lampTimedEvent = this.time.addEvent({ delay: 900, callback: onEvent1, callbackScope: this, loop: false })   // wywołanie funkcji z opóżnieniem
+                lampTimedEvent = this.time.addEvent({ delay: 500, callback: onEvent1, callbackScope: this, loop: false })   // wywołanie funkcji przejścia do innego poziomu
             }
 
             if (intensityPlayerLamp <= 0) //sprawdzenie mocy lampy przegrana jeśli dojdzie do 0
             {
-                lampTimedEvent = this.time.addEvent({ delay: 100, callback: onEvent2, callbackScope: this, loop: false }) //wywołanie funkcji z opóźnieniem
+                lampTimedEvent = this.time.addEvent({ delay: 100, callback: onEvent2, callbackScope: this, loop: false }) //wywołanie warunków przegranej
+            }
+
+            if (touchFire) {
+                PlayerTouchFire = this.time.addEvent({ delay: 100, callback: onEvent3, callbackScope: this, loop: false }) //wywołanie warunków przegranej
+            }
+
+            if (touchSpikes) {
+                PlayerTouchSpikes = this.time.addEvent({ delay: 100, callback: onEvent4, callbackScope: this, loop: false }) //wywołanie warunków przegranej
             }
 
             light.setIntensity(intensityPlayerLamp);
@@ -1390,9 +1491,9 @@ var Preloader = new Phaser.Class({
 
     })
 
-      ///////////////////////////////////////////////////////////////////////////// FIRE GAME OVER /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////// FIRE GAME OVER ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-var Gameoverfirescreen = new Phaser.Class({
+    var Gameoverfirescreen = new Phaser.Class({
 
 Extends: Phaser.Scene,
 
@@ -1404,7 +1505,7 @@ initialize:
 
 create: function () {
 
-    this.add.text(200, 300, 'GAME OVER \n\n\n Wszechobecna ciemność przyćmiła również Twój umysł wchodząc prosto do ognia! Następnym razem postaraj się najpierw ugasić pożar \n\n\n naciśnij spację aby spróbować ponownie....', // wątek fabularny
+    this.add.text(200, 300, 'GAME OVER \n\n\n Wejście prosto w ogień nie pomoże ci w ucieczce od ciemności! Następnym razem postaraj się najpierw ugasić pożar \n\n\n naciśnij spację aby spróbować ponownie....', // wątek fabularny
         {
             fill: '#fff'
         });
@@ -1417,7 +1518,7 @@ startStage1: function () {   // funkcja która ładuję się po naciśnięciu sp
 },
 })
 
-    ///////////////////////////////////////////////////////////////////////////// GAME OVER /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////// DARKNESS GAME OVER ////////////////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     var Gameoverscreen = new Phaser.Class({
 
@@ -1443,7 +1544,34 @@ startStage1: function () {   // funkcja która ładuję się po naciśnięciu sp
             this.scene.start('intro');
         },
     })
-    ///////////////////////////////////////////////////////////////////////////// GAME ENDING /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////// SPIKES GAME OVER //////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    var Gameoverspikes = new Phaser.Class({
+
+        Extends: Phaser.Scene,
+
+        initialize:
+
+            function Gameoverspikes() {
+                Phaser.Scene.call(this, { key: 'Gameoverspikes' });
+            },
+
+        create: function () {
+
+            this.add.text(200, 300, 'GAME OVER \n\n\n Wskoczenie na ostre kolce kończy się twoją śmiercią w męczarniach. Następnym razem spróbuj je ominąć. \n\n\n naciśnij spację aby spróbować ponownie....', // wątek fabularny
+                {
+                    fill: '#fff'
+                });
+
+            this.input.keyboard.on('keydown-SPACE', this.startStage1, this); // ustawienie nasłuchiwania na naciśnięcie spacji
+        },
+
+        startStage1: function () {   // funkcja która ładuję się po naciśnięciu spacji
+            this.scene.start('intro');
+        },
+    })
+
+    ///////////////////////////////////////////////////////////////////////////// GAME ENDING ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     var Gameending = new Phaser.Class({ //Scena zakończenia
 
@@ -1483,7 +1611,7 @@ var config = {
         },
 
         scene: [
-            Preloader, MainMenu, Intro, Stage1, WindowBetweenStage1AndStage2, Stage2, WindowBetweenStage2AndStage3, Stage3, Gameending, Gameoverscreen, Gameoverfirescreen
+            Preloader, MainMenu, Intro, Stage1, WindowBetweenStage1AndStage2, Stage2, WindowBetweenStage2AndStage3, Stage3, Gameending, Gameoverscreen, Gameoverfirescreen, Gameoverspikes
     ],
        
         plugins: {
