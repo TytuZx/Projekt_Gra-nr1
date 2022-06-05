@@ -54,7 +54,7 @@ var Preloader = new Phaser.Class({
     preload: function()
     {
         this.load.image('buttonStart', 'assets/PlayButton2.png');
-        this.scene.start('mainmenu');
+        this.scene.start('stage2');
     }
 
 
@@ -541,6 +541,8 @@ var Preloader = new Phaser.Class({
             insideWall = this.physics.add.staticGroup();
             keyPhisics = this.physics.add.staticGroup();
             backgroundt = this.physics.add.staticGroup();
+            fires = this.physics.add.staticGroup();
+            extinguishers = this.physics.add.staticGroup();
 
 
             sceneElementsStatic = this.physics.add.staticGroup();
@@ -561,6 +563,9 @@ var Preloader = new Phaser.Class({
             this.load.image('tiles1', 'assets/tile10.png');
             this.load.image('tiles2', 'assets/tile178.png');
             this.load.image('tiles3', 'assets/tile4.png');
+            this.load.image('fire', 'assets/fire.gif');
+            this.load.image('extinguisher', 'assets/extinguisher.png');
+
             this.load.spritesheet('hero', 'assets/herosprite.png', { frameWidth: 16, frameHeight: 16 });
         },
 
@@ -618,20 +623,61 @@ var Preloader = new Phaser.Class({
                 if (counterKey == 0) {
                     isTouchingTheDoor = true;
                 }
-
-
             };
+
+            function takeExtinguishers() {
+                hasExtinguishers = true;
+                extinguisherText.setText('GAŚNICA!');
+                extinguishers1.disableBody(true, true);
+            }
+
+            function fire1Collider() {
+                if (hasExtinguishers)
+                {
+                    fire1.disableBody(true, true);
+                    fireLight1.setIntensity(0);
+                }
+                else
+                {
+                    touchFire = true;
+                }
+            }
+
+            function fire2Collider() {
+                if (hasExtinguishers)
+                {
+                    fire2.disableBody(true, true);
+                    fireLight2.setIntensity(0);
+
+                }
+                else
+                {
+                    touchFire = true;
+                }
+            }
+            function fire3Collider() {
+                if (hasExtinguishers)
+                {
+                    fire3.disableBody(true, true);
+                    fireLight3.setIntensity(0);
+
+                }
+                else
+                {
+                    touchFire = true;
+                }
+            }
 
             function onEvent() {
                 intensityPlayerLamp = intensityPlayerLamp - 0.001;
             };
 
 
-
-
             var i;
             counterKey = 5; // ustawienie licznika kluczy
             isTouchingTheDoor = false; //ustawienie styku z drzwiami do default
+            hasExtinguishers = false;
+            touchFire = false;
             background = this.add.image(800, 450, 'groundj');
 
             for (hor = 0; hor < 1600;) {  //generowanie tła
@@ -670,6 +716,8 @@ var Preloader = new Phaser.Class({
 
             counterText = this.add.text(1040, 30, 'brakujące klucze:  ' + counterKey, { fontSize: '32px', fill: '#999' });
             LampIntensityText = this.add.text(1040, 60, 'pozostało światła:  ' + intensityPlayerLamp + ' %', { fontSize: '32px', fill: '#999' });
+            extinguisherText = this.add.text(1040, 90, '' , { fontSize: '32px', fill: '#999' });
+
 
 
             newDistance = 0;    // tworzenie lewej ściany
@@ -697,73 +745,126 @@ var Preloader = new Phaser.Class({
             newDistance = 0;
 
             /////////////////////////////////////////////////////////////////////////////////////PLANSZA
-            var newDistance = 130;
-            for (i = 0; i < 30; i++) {
-                insideWall.create(newDistance, 800, 'insideWall').setPipeline('Light2D');
-                newDistance += platformDistance;
-            }
+          
 
-            var newDistance = 100;
-            for (i = 0; i < 12; i++) {
+            var newDistance = 120;
+            for (i = 0; i < 16; i++) {
                 insideWall.create(120, newDistance, 'insideWallColumn').setPipeline('Light2D');
                 newDistance += platformDistance;
             }
-
-            var newDistance = 60;
-            for (i = 0; i < 14; i++) {
-                insideWall.create(220, newDistance, 'insideWallColumn').setPipeline('Light2D');
+            
+            var newDistance = 20;
+            for (i = 0; i < 17; i++) {
+                insideWall.create(1000, newDistance, 'insideWallColumn').setPipeline('Light2D');
                 newDistance += platformDistance;
             }
+            var newDistance = 120;
+            for (i = 0; i < 15; i++) {
+                insideWall.create(1090, newDistance, 'insideWallColumn').setPipeline('Light2D');
+                newDistance += platformDistance;
+            }
+            var newDistance = 120;
+            for (i = 0; i < 15; i++) {
+                insideWall.create(1180, newDistance, 'insideWallColumn').setPipeline('Light2D');
+                newDistance += platformDistance;
+            }
+            var newDistance = 120;
+            for (i = 0; i < 15; i++) {
+                insideWall.create(1270, newDistance, 'insideWallColumn').setPipeline('Light2D');
+                newDistance += platformDistance;
+            }
+
+            var newDistance = 120;
+            for (i = 0; i < 5; i++) {
+                insideWall.create(1480, newDistance, 'insideWallColumn').setPipeline('Light2D');
+                newDistance += platformDistance;
+            }
+            var newDistance = 460;
+            for (i = 0; i < 9; i++) {
+                insideWall.create(1480, newDistance, 'insideWallColumn').setPipeline('Light2D');
+                newDistance += platformDistance;
+            }
+
+            var newDistance = 520;
+            for (i = 0; i < 7; i++) {
+                insideWall.create(210, newDistance, 'insideWallColumn').setPipeline('Light2D');
+                newDistance += platformDistance;
+            }
+            var newDistance = 520;
+            for (i = 0; i < 7; i++) {
+                insideWall.create(300, newDistance, 'insideWallColumn').setPipeline('Light2D');
+                newDistance += platformDistance;
+            }
+            var newDistance = 520;
+            for (i = 0; i < 7; i++) {
+                insideWall.create(390, newDistance, 'insideWallColumn').setPipeline('Light2D');
+                newDistance += platformDistance;
+            }
+            var newDistance = 520;
+            for (i = 0; i < 7; i++) {
+                insideWall.create(480, newDistance, 'insideWallColumn').setPipeline('Light2D');
+                newDistance += platformDistance;
+            }
+            var newDistance = 600;
+            for (i = 0; i < 6; i++) {
+                insideWall.create(570, newDistance, 'insideWallColumn').setPipeline('Light2D');
+                newDistance += platformDistance;
+            }
+            var newDistance = 600;
+            for (i = 0; i < 6; i++) {
+                insideWall.create(660, newDistance, 'insideWallColumn').setPipeline('Light2D');
+                newDistance += platformDistance;
+            }
+            var newDistance = 600;
+            for (i = 0; i < 6; i++) {
+                insideWall.create(750, newDistance, 'insideWallColumn').setPipeline('Light2D');
+                newDistance += platformDistance;
+            }
+            var newDistance = 600;
+            for (i = 0; i < 6; i++) {
+                insideWall.create(840, newDistance, 'insideWallColumn').setPipeline('Light2D');
+                newDistance += platformDistance;
+            }
+         
+
 
             var newDistance = 130;
-            for (i = 0; i < 25; i++) {
-                insideWall.create(newDistance, 720, 'insideWall').setPipeline('Light2D');
+            for (i = 0; i < 16; i++) {
+                insideWall.create(newDistance, 90, 'insideWall').setPipeline('Light2D');
                 newDistance += platformDistance;
             }
-
-            var newDistance = 330;
-            for (i = 0; i < 15; i++) {
+            var newDistance = 1200;
+            for (i = 0; i < 8; i++) {
                 insideWall.create(newDistance, 100, 'insideWall').setPipeline('Light2D');
                 newDistance += platformDistance;
             }
-
-            var newDistance = 370;
-            for (i = 0; i < 25; i++) {
+            var newDistance = 130;
+            for (i = 0; i < 16; i++) {
                 insideWall.create(newDistance, 170, 'insideWall').setPipeline('Light2D');
                 newDistance += platformDistance;
             }
-            var newDistance = 190;
-            for (i = 0; i < 10; i++) {
-                insideWall.create(340, newDistance, 'insideWallColumn').setPipeline('Light2D');
+            var newDistance = 130;
+            for (i = 0; i < 16; i++) {
+                insideWall.create(newDistance, 250, 'insideWall').setPipeline('Light2D');
                 newDistance += platformDistance;
             }
-            var newDistance = 190;
-            for (i = 0; i < 6; i++) {
-                insideWall.create(700, newDistance, 'insideWallColumn').setPipeline('Light2D');
+            var newDistance = 130;
+            for (i = 0; i < 16; i++) {
+                insideWall.create(newDistance, 330, 'insideWall').setPipeline('Light2D');
                 newDistance += platformDistance;
             }
-            var newDistance = 190;
-            for (i = 0; i < 12; i++) {
-                insideWall.create(1400, newDistance, 'insideWallColumn').setPipeline('Light2D');
+            var newDistance = 130;
+            for (i = 0; i < 16; i++) {
+                insideWall.create(newDistance, 410, 'insideWall').setPipeline('Light2D');
                 newDistance += platformDistance;
             }
-            var newDistance = 370;
-            for (i = 0; i < 20; i++) {
-                insideWall.create(newDistance, 560, 'insideWall').setPipeline('Light2D');
+            var newDistance = 130;
+            for (i = 0; i < 16; i++) {
+                insideWall.create(newDistance, 500, 'insideWall').setPipeline('Light2D');
                 newDistance += platformDistance;
             }
-            var newDistance = 370;
-            for (i = 0; i < 20; i++) {
-                insideWall.create(newDistance, 640, 'insideWall').setPipeline('Light2D');
-                newDistance += platformDistance;
-            }
-            var newDistance = 720;
-            for (i = 0; i < 12; i++) {
-                insideWall.create(newDistance, 460, 'insideWall').setPipeline('Light2D');
-                newDistance += platformDistance;
-            }
-            
 
+           
 
             /////////////////////////////////////////////////////////////////////////////////////PLANSZA
 
@@ -773,14 +874,14 @@ var Preloader = new Phaser.Class({
             lamp = this.physics.add.sprite(400, 300, 'lamp');
 
             lightLamp = this.lights.addLight(380, 300, 300).setColor(0xffffff).setIntensity(1.3); // ustawienie światła dla lampy
-            door = this.physics.add.staticImage(80, 436, 'door');
+            door = this.physics.add.staticImage(200, 450, 'door');
             door.setPipeline('Light2D');  // funkcja która sprawia, że drzwi działają ze światłem
 
-            key1 = keyPhisics.create(80, 60, 'key');  // tworzenie klucza nr1
-            key2 = keyPhisics.create(1500, 60, 'key');  // tworzenie klucza nr1
-            key3 = keyPhisics.create(1500, 840, 'key');  // tworzenie klucza nr1
-            key4 = keyPhisics.create(400, 600, 'key');  // tworzenie klucza nr1
-            key5 = keyPhisics.create(1500, 250, 'key');  // tworzenie klucza nr1
+            key1 = keyPhisics.create(700, 450, 'key');  // tworzenie klucza nr1
+            key2 = keyPhisics.create(1520, 160, 'key');  // tworzenie klucza nr1
+            key3 = keyPhisics.create(200, 205, 'key');  // tworzenie klucza nr1
+            key4 = keyPhisics.create(340, 550, 'key');  // tworzenie klucza nr1
+            key5 = keyPhisics.create(700, 850, 'key');  // tworzenie klucza nr1
 
             key1.setPipeline('Light2D'); //oddziaływanie światła na klucze
             key2.setPipeline('Light2D');
@@ -788,11 +889,23 @@ var Preloader = new Phaser.Class({
             key4.setPipeline('Light2D');
             key5.setPipeline('Light2D');
 
-            vase1 = keyPhisics.create(1000, 400, 'vase'); //zbiorniki z olejem do lampy
+            vase1 = keyPhisics.create(200, 130, 'vase'); //zbiorniki z olejem do lampy
             vase1.setPipeline('Light2D');
 
-            vase2 = keyPhisics.create(1000, 300, 'vase');
+            vase2 = keyPhisics.create(250, 130, 'vase');
             vase2.setPipeline('Light2D');
+
+            extinguishers1 = extinguishers.create(70, 800, 'extinguisher').setPipeline('Light2D');
+
+            fire1 = fires.create(850, 450, 'fire').setScale(2);
+            fire2 = fires.create(800, 450, 'fire').setScale(2);
+            fire3 = fires.create(750, 450, 'fire').setScale(2);
+
+            fireLight1 = this.lights.addLight(850, 450, 300).setColor(0xFF0000).setIntensity(1.3);
+            fireLight2 = this.lights.addLight(800, 450, 300).setColor(0xFF0000).setIntensity(1.3);
+            fireLight3 = this.lights.addLight(750, 450, 300).setColor(0xFF0000).setIntensity(1.3);
+
+
 
             /////// GRACZ
 
@@ -828,6 +941,11 @@ var Preloader = new Phaser.Class({
             this.physics.add.collider(vase1, player, addLight1, null, this);
             this.physics.add.collider(vase2, player, addLight2, null, this);
             this.physics.add.overlap(door, player, openDoor);
+            this.physics.add.collider(extinguishers1, player, takeExtinguishers, null, this);
+            this.physics.add.collider(fire1, player, fire1Collider, null, this);
+            this.physics.add.collider(fire2, player, fire2Collider, null, this);
+            this.physics.add.collider(fire3, player, fire3Collider, null, this);
+
         },
 
         update: function () {
@@ -839,6 +957,13 @@ var Preloader = new Phaser.Class({
             function onEvent2() {
                 this.scene.start('Gameoverscreen'); //ekran game over
             };
+
+            function onEvent3() {
+                this.scene.start('Gameoverfirescreen');
+            }
+            if (touchFire) {
+                PlayerTouchFire = this.time.addEvent({ delay: 900, callback: onEvent3, callbackScope: this, loop: false }) 
+            }
 
             if (cursors.left.isDown) {   // sterowanie postacią dla każdego klawisza
                 player.setVelocityX(-Player_Velocity);
@@ -1264,6 +1389,34 @@ var Preloader = new Phaser.Class({
 
 
     })
+
+      ///////////////////////////////////////////////////////////////////////////// FIRE GAME OVER /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+var Gameoverfirescreen = new Phaser.Class({
+
+Extends: Phaser.Scene,
+
+initialize:
+
+    function Gameoverfirescreen() {
+        Phaser.Scene.call(this, { key: 'Gameoverfirescreen' });
+    },
+
+create: function () {
+
+    this.add.text(200, 300, 'GAME OVER \n\n\n Wszechobecna ciemność przyćmiła również Twój umysł wchodząc prosto do ognia! Następnym razem postaraj się najpierw ugasić pożar \n\n\n naciśnij spację aby spróbować ponownie....', // wątek fabularny
+        {
+            fill: '#fff'
+        });
+
+    this.input.keyboard.on('keydown-SPACE', this.startStage1, this); // ustawienie nasłuchiwania na naciśnięcie spacji
+},
+
+startStage1: function () {   // funkcja która ładuję się po naciśnięciu spacji
+    this.scene.start('intro');
+},
+})
+
     ///////////////////////////////////////////////////////////////////////////// GAME OVER /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     var Gameoverscreen = new Phaser.Class({
@@ -1330,7 +1483,7 @@ var config = {
         },
 
         scene: [
-            Preloader, MainMenu, Intro, Stage1, WindowBetweenStage1AndStage2, Stage2, WindowBetweenStage2AndStage3, Stage3, Gameending, Gameoverscreen
+            Preloader, MainMenu, Intro, Stage1, WindowBetweenStage1AndStage2, Stage2, WindowBetweenStage2AndStage3, Stage3, Gameending, Gameoverscreen, Gameoverfirescreen
     ],
        
         plugins: {
