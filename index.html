@@ -160,9 +160,26 @@ var Preloader = new Phaser.Class({
         Phaser.Scene.call(this, { key: 'infoPage' });
     },
 
-create: function () {
+    preload: function() //ładowanie plików do gry (tekstury etc.)
+    {
+        
 
-    this.add.text(500, 300, 'Poziom 2 \n\n\n Udało Ci się zebrać wszystkie klucze i wszedłeś na kolejne piętro. Czujesz jakby coś się paliło... \n\n\n naciśnij spację aby przejść dalej....', // wątek fabularny
+        this.load.image('fire', 'assets/fire.gif');
+        this.load.image('extinguisher', 'assets/extinguisher.png');
+        this.load.image('spikes', 'assets/spikes.png');
+        this.load.image('vase', 'assets/vase.png');
+
+    },
+
+create: function () {
+    vase = this.add.sprite(470, 455, 'vase'); //generowanie tła
+    fire = this.add.sprite(470, 510, 'fire'); //generowanie tła
+    spikes = this.add.sprite(470, 565, 'spikes'); //generowanie tła
+    extinguisher = this.add.sprite(470, 620, 'extinguisher'); //generowanie tła
+
+
+
+    this.add.text(500, 212, 'Sterowanie:\n\n Sterowanie bohaterem odbywa się za pomocą strzałek na klawiaturze. \n\n Cel: \n\n Celem gry jest znalezienie wszystkich pięciu kluczy potrzebnych do otworzenia drzwi do każdego poziomu. \n Spiesz się!!! masz ograniczany czas, Twoja lampa wraz z upływem czasu przygasa. \n Gracz wygrywa przechodząc ostatni poziom.  \n\n Zwróć uwagę na następujące przedmioty: \n\n\n - waza z naftą - uzupełni twoją lampę, zwiekszy intensywność światła \n\n\n - ogień - wejście w ogień zakończy Twój żywot, unikaj go nim go nie zgasisz \n\n\n - kolce - wejście w kolce również zakończy Twój żywot \n\n\n - gaśnica - znalezienie gaśnicy pozwala ugasić ogień i dostać się do niedostępnych wcześniej miejsc \n\n\n\n\n\n aby wrócić do menu naciśnij spację....', // wątek fabularny
         {
             fill: '#fff'
         });
@@ -1110,13 +1127,14 @@ startStage1: function () {   // funkcja która ładuję się po naciśnięciu sp
             this.load.image('key', 'assets/key2.png');
             this.load.image('insideWall', 'assets/tile54.png');
             this.load.image('insideWallColumn', 'assets/tile55.png');
-            this.load.image('vase', 'assets/vase.png');
             this.load.image('tiles1', 'assets/tile10.png');
             this.load.image('tiles2', 'assets/tile178.png');
             this.load.image('tiles3', 'assets/tile4.png');
             this.load.image('fire', 'assets/fire.gif');
             this.load.image('extinguisher', 'assets/extinguisher.png');
             this.load.image('spikes', 'assets/spikes.png');
+            this.load.image('vase', 'assets/vase.png');
+
 
 
             this.load.spritesheet('hero', 'assets/herosprite.png', { frameWidth: 16, frameHeight: 16 });
