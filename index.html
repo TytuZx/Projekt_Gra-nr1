@@ -78,21 +78,30 @@ var Preloader = new Phaser.Class({
     {
         this.load.image('buttonStart', 'assets/PlayButton2.png');
         this.load.image('buttonQuit', 'assets/QuitButton2.png');
-
+        this.load.image('buttonInfo', 'assets/Info_Button.png');
     },
 
     
     create:  function () 
     {
         var bs = this.add.image(800, 450, 'buttonStart');
+        var info = this.add.image(800, 500, 'buttonInfo');
         var bq = this.add.image(800, 550, 'buttonQuit');
+        info.setScale(0.2);
 
 
         bs.setInteractive();
+        info.setInteractive();
 
         bs.once('pointerup', function () {
 
             this.scene.start('intro');
+
+        }, this);
+
+        info.once('pointerup', function () {
+
+        this.scene.start('infoPage');
 
         }, this);
     }
@@ -136,6 +145,37 @@ var Preloader = new Phaser.Class({
     },
 
 }) 
+
+
+    ///////////////////////////////////////////////////////////////////////////// INFO ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+   
+    var InfoPage = new Phaser.Class({
+
+    Extends: Phaser.Scene,
+
+    initialize:
+
+    function InfoPage() {
+        Phaser.Scene.call(this, { key: 'infoPage' });
+    },
+
+create: function () {
+
+    this.add.text(500, 300, 'Poziom 2 \n\n\n Udało Ci się zebrać wszystkie klucze i wszedłeś na kolejne piętro. Czujesz jakby coś się paliło... \n\n\n naciśnij spację aby przejść dalej....', // wątek fabularny
+        {
+            fill: '#fff'
+        });
+
+    this.input.keyboard.on('keydown-SPACE', this.startStage1, this); // ustawienie nasłuchiwania na naciśnięcie spacji
+},
+
+startStage1: function () {   // funkcja która ładuję się po naciśnięciu spacji
+    this.scene.start('mainmenu');
+},
+})
+
+
     ///////////////////////////////////////////////////////////////////////////// STAGE 1 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     var Stage1 = new Phaser.Class({  // poziom pierwszy gry
@@ -160,7 +200,6 @@ var Preloader = new Phaser.Class({
       
         
         sceneElementsStatic = this.physics.add.staticGroup();
-
 
         this.load.image('groundp', 'assets/ground.png'); //ładowanie konkretnego pliku
         this.load.image('groundj', 'assets/ground.jpg');
@@ -1648,7 +1687,7 @@ var config = {
         },
 
         scene: [
-            Preloader, MainMenu, Intro, Stage1, WindowBetweenStage1AndStage2, Stage2, WindowBetweenStage2AndStage3, Stage3, Gameending, Gameoverscreen, Gameoverfirescreen, Gameoverspikes
+            Preloader, InfoPage, MainMenu, Intro, Stage1, WindowBetweenStage1AndStage2, Stage2, WindowBetweenStage2AndStage3, Stage3, Gameending, Gameoverscreen, Gameoverfirescreen, Gameoverspikes
     ],
        
         plugins: {
