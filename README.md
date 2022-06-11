@@ -1,4 +1,4 @@
 # Game-Project1
 To jest nasz projekt na Zaliczenie Aplikacji Internetowych.
-Będzie to gra.
-Jaka? To się okaże.
+Jest to gra przygodowa o przemierzaniu lochu.
+Miłej Gry!
