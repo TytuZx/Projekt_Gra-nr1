@@ -77,7 +77,6 @@ var Preloader = new Phaser.Class({
     preload: function()
     {
         this.load.image('buttonStart', 'assets/PlayButton2.png');
-        this.load.image('buttonQuit', 'assets/QuitButton2.png');
         this.load.image('buttonInfo', 'assets/Info_Button.png');
     },
 
@@ -85,9 +84,9 @@ var Preloader = new Phaser.Class({
     create:  function () 
     {
         var bs = this.add.image(800, 450, 'buttonStart');
-        var info = this.add.image(800, 500, 'buttonInfo');
-        var bq = this.add.image(800, 550, 'buttonQuit');
-        info.setScale(0.2);
+        var info = this.add.image(800, 550, 'buttonInfo');
+        bs.setScale(2);
+        info.setScale(0.5);
 
 
         bs.setInteractive();
@@ -145,11 +144,8 @@ var Preloader = new Phaser.Class({
     },
 
 }) 
-
-
     ///////////////////////////////////////////////////////////////////////////// INFO ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-   
     var InfoPage = new Phaser.Class({
 
     Extends: Phaser.Scene,
@@ -172,10 +168,10 @@ var Preloader = new Phaser.Class({
     },
 
 create: function () {
-    vase = this.add.sprite(470, 455, 'vase'); //generowanie tła
-    fire = this.add.sprite(470, 510, 'fire'); //generowanie tła
-    spikes = this.add.sprite(470, 565, 'spikes'); //generowanie tła
-    extinguisher = this.add.sprite(470, 620, 'extinguisher'); //generowanie tła
+    vase = this.add.sprite(470, 415, 'vase'); //generowanie tła
+    fire = this.add.sprite(470, 455, 'fire'); //generowanie tła
+    spikes = this.add.sprite(470, 505, 'spikes'); //generowanie tła
+    extinguisher = this.add.sprite(470, 555, 'extinguisher'); //generowanie tła
 
 
 
@@ -191,8 +187,6 @@ startStage1: function () {   // funkcja która ładuję się po naciśnięciu sp
     this.scene.start('mainmenu');
 },
 })
-
-
     ///////////////////////////////////////////////////////////////////////////// STAGE 1 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     var Stage1 = new Phaser.Class({  // poziom pierwszy gry
