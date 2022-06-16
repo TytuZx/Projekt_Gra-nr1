@@ -77,30 +77,20 @@ var Preloader = new Phaser.Class({
     preload: function()
     {
         this.load.image('buttonStart', 'assets/PlayButton2.png');
-        this.load.image('buttonInfo', 'assets/Info_Button.png');
     },
 
     
     create:  function () 
     {
         var bs = this.add.image(800, 450, 'buttonStart');
-        var info = this.add.image(800, 550, 'buttonInfo');
         bs.setScale(2);
-        info.setScale(0.5);
 
 
         bs.setInteractive();
-        info.setInteractive();
 
         bs.once('pointerup', function () {
 
-            this.scene.start('intro');
-
-        }, this);
-
-        info.once('pointerup', function () {
-
-        this.scene.start('infoPage');
+            this.scene.start('infoPage');
 
         }, this);
     }
@@ -175,7 +165,7 @@ create: function () {
 
 
 
-    this.add.text(500, 212, 'Sterowanie:\n\n Sterowanie bohaterem odbywa się za pomocą strzałek na klawiaturze. \n\n Cel: \n\n Celem gry jest znalezienie wszystkich pięciu kluczy potrzebnych do otworzenia drzwi do każdego poziomu. \n Spiesz się!!! masz ograniczany czas, Twoja lampa wraz z upływem czasu przygasa. \n Gracz wygrywa przechodząc ostatni poziom.  \n\n Zwróć uwagę na następujące przedmioty: \n\n\n - waza z naftą - uzupełni twoją lampę, zwiekszy intensywność światła \n\n\n - ogień - wejście w ogień zakończy Twój żywot, unikaj go nim go nie zgasisz \n\n\n - kolce - wejście w kolce również zakończy Twój żywot \n\n\n - gaśnica - znalezienie gaśnicy pozwala ugasić ogień i dostać się do niedostępnych wcześniej miejsc \n\n\n\n\n\n aby wrócić do menu naciśnij spację....', // wątek fabularny
+    this.add.text(500, 212, 'Sterowanie:\n\n Sterowanie bohaterem odbywa się za pomocą strzałek na klawiaturze. \n\n Cel: \n\n Celem gry jest znalezienie wszystkich pięciu kluczy potrzebnych do otworzenia drzwi do każdego poziomu. \n Spiesz się!!! masz ograniczany czas, Twoja lampa wraz z upływem czasu przygasa. \n Gracz wygrywa przechodząc ostatni poziom.  \n\n Zwróć uwagę na następujące przedmioty: \n\n\n - waza z naftą - uzupełni twoją lampę, zwiekszy intensywność światła \n\n\n - ogień - wejście w ogień zakończy Twój żywot, unikaj go nim go nie zgasisz \n\n\n - kolce - wejście w kolce również zakończy Twój żywot \n\n\n - gaśnica - znalezienie gaśnicy pozwala ugasić ogień i dostać się do niedostępnych wcześniej miejsc \n\n\n\n\n\n aby kontynuować naciśnij spację....', // wątek fabularny
         {
             fill: '#fff'
         });
@@ -184,7 +174,7 @@ create: function () {
 },
 
 startStage1: function () {   // funkcja która ładuję się po naciśnięciu spacji
-    this.scene.start('mainmenu');
+    this.scene.start('intro');
 },
 })
     ///////////////////////////////////////////////////////////////////////////// STAGE 1 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
